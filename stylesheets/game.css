@@ -1,0 +1,9 @@
+canvas#mainGame {
+    display: block;
+    margin: auto;
+}
+
+body {
+  margin: 0px;
+  padding: 10px;
+}
