@@ -26,7 +26,7 @@ view.well = {
                 .fillRect(blockWidth * (width - 2),
                           blockHeight,
                           blockWidth + 1,
-                          (blockHeight * (height - 2)) + 1);
+                           (blockHeight * (height - 2)) + 1);
     }
 }
 
@@ -42,7 +42,7 @@ app.view = {
     },
 
     clear: function() {
-        this.context.fillStyle  = 'black';
+        this.context.fillStyle = 'black';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     },
 

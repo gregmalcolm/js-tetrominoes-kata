@@ -5,7 +5,7 @@ app.model = {
     canvasHeight: undefined,
     blockWidth: undefined,
     blockHeight: undefined,
-    widthInBlocks: 12,
+    widthInBlocks: 14,
     heightInBlocks: 17,
 
     init: function(view) {
