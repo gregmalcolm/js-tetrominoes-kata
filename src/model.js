@@ -34,6 +34,81 @@ app.model = {
              ["XOXX"]]})
         );
 
+        self.push(model.Shape.spawn({blocks:
+            [["X",
+              "X",
+              "O",
+              "XX"],
+
+             ["XOXX",
+              "X"],
+
+             ["XX",
+              " O",
+              " X",
+              " X"],
+
+             ["   X",
+              "XXOX"]]})
+        );
+
+        self.push(model.Shape.spawn({blocks:
+            [[" X",
+              " X",
+              " O",
+              "XX"],
+
+             ["X",
+              "XOXX"],
+
+             ["XX",
+              "O",
+              "X",
+              "X"],
+
+             ["XXOX",
+              "   X"]]})
+        );
+
+        self.push(model.Shape.spawn({blocks:
+            [["X",
+              "OX",
+              " X"],
+
+             [" OX",
+              "XX"]]})
+        );
+
+        self.push(model.Shape.spawn({blocks:
+            [[" X",
+              "OX",
+              "X"],
+
+             ["XO ",
+              " XX"]]})
+        );
+
+        self.push(model.Shape.spawn({blocks:
+            [[" X",
+              "XO",
+              " X"],
+
+             [" X ",
+              "XOX"],
+
+             ["X",
+              "OX",
+              "X"],
+
+             ["XOX",
+              " X"]]})
+        );
+
+        self.push(model.Shape.spawn({blocks:
+            [["XX",
+              "OX"]]})
+        );
+
         return self;
     },
 
@@ -67,7 +142,7 @@ model.Shape = {
         for(var y = 0; y < blocks.length; ++y) {
             for(var x = 0; x < blocks[y].length; ++x) {
                 block = blocks[y][x];
-                if (block !== " ") {
+                if (!block.match(/[ .]/)) {
                     position.blocks.push( {'x' : x - offsets.x,
                                            'y' : y - offsets.y});
                 }
@@ -80,7 +155,7 @@ model.Shape = {
     findBlockOffsets: function(blocks) {
         for(var y = 0; y < blocks.length; ++y) {
             for(var x = 0; x < blocks[y].length; ++x) {
-                if(blocks[y][x]==='O') {
+                if(blocks[y][x].match(/[O.]/)) {
                     return {'x' : x, 'y' : y};
                 }
             }

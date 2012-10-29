@@ -18,7 +18,7 @@ describe("tetrominoes.model", function() {
         describe("shapes", function() {
             var shape;
             When(function() { this.subject.init(this.view); });
-            Then(function() { return this.subject.shapes.length === 1 });
+            Then(function() { return this.subject.shapes.length === 7 });
 
             describe("#1", function() {
                 Given(function() { this.shape = this.subject.shapes[0] });
@@ -71,9 +71,21 @@ describe("model.Shape", function() {
 
             Then(function() { return this.shape.positions[0].blocks[3].x === 1 });
             Then(function() { return this.shape.positions[0].blocks[3].y === 0 });
+
+            Then(function() { return this.shape.positions[0].blocks.length === 4 });
         });
 
-        context("with a zigzag and two positions ", function() {
+        context("with a zigzag shape and an 'invisible' origin point", function() {
+            When(function() { this.shape = model.Shape.spawn({blocks: [["XX",
+                                                                        ".XX"]]}) });
+
+            Then(function() { return this.shape.positions[0].blocks[0].x === 0 });
+            Then(function() { return this.shape.positions[0].blocks[0].y === -1 });
+
+            Then(function() { return this.shape.positions[0].blocks.length === 4 });
+        });
+
+        context("with a zigzag shape and two positions ", function() {
             When(function() { this.shape = model.Shape.spawn({blocks: [["XX",
                                                                         " OX"],
 
