@@ -50,25 +50,42 @@ model.Shape = {
         return self;
     },
 
-    calcPositions: function(blocks) {
+    calcPositions: function(blockPositions) {
         var positions = [];
-        var offsetX = 0;
-        var offsetY = 0;
 
-        for(var pos = 0; pos < blocks.length; ++pos) {
-            positions[pos] = { blocks: [] };
-            for(var y = 0; y < blocks[pos].length; ++y) {
-                block_num=0;
-                for(var x = 0; x < blocks[pos][y].length; ++x) {
-                    block = blocks[pos][y][x];
-                    if (block !== " ") {
-                        positions[pos].blocks.push( {'x' : x,
-                                                     'y' : y });
-                    }
+        for(var pos = 0; pos < blockPositions.length; ++pos) {
+            positions.push(this.calcPosition(blockPositions[pos]));
+        }
+
+        return positions;
+    },
+
+    calcPosition: function(blocks) {
+        var offsets = this.findBlockOffsets(blocks);
+
+        var position = { blocks: [] };
+        for(var y = 0; y < blocks.length; ++y) {
+            for(var x = 0; x < blocks[y].length; ++x) {
+                block = blocks[y][x];
+                if (block !== " ") {
+                    position.blocks.push( {'x' : x - offsets.x,
+                                           'y' : y - offsets.y});
                 }
             }
         }
 
-        return positions;
+        return position;
+    },
+
+    findBlockOffsets: function(blocks) {
+        for(var y = 0; y < blocks.length; ++y) {
+            for(var x = 0; x < blocks[y].length; ++x) {
+                if(blocks[y][x]==='O') {
+                    return {'x' : x, 'y' : y};
+                }
+            }
+        }
+
+        return {'x' : 0, 'y' : 0};
     },
 };
