@@ -5,10 +5,10 @@ view.well = {
     render: function() {
         app.view.context.fillStyle = '#CCC';
 
-        var blockWidth  = app.model.blockWidth;
-        var blockHeight = app.model.blockHeight;
-        var width       = app.model.widthInBlocks;
-        var height      = app.model.heightInBlocks;
+        var blockWidth  = app.view.model.blockWidth;
+        var blockHeight = app.view.model.blockHeight;
+        var width       = app.view.model.widthInBlocks;
+        var height      = app.view.model.heightInBlocks;
 
         app.view.context
                 .fillRect(blockWidth,
@@ -28,15 +28,18 @@ view.well = {
                           blockWidth + 1,
                            (blockHeight * (height - 2)) + 1);
     }
-}
+};
 
 app.view = {
+    model: undefined,
+
     canvas: undefined,
     context: undefined,
 
     well: view.well,
 
-    init: function() {
+    init: function(model) {
+        this.model = model;
         this.canvas = $('canvas#mainGame')[0]
         this.context = this.canvas.getContext('2d');
     },
@@ -50,6 +53,6 @@ app.view = {
         this.clear();
         this.well.render();
     },
-}
+};
 
 

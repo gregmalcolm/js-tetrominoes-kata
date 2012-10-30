@@ -1,6 +1,6 @@
-describe("tetrominoes.model", function() {
+describe("tetrominoes.Model", function() {
     var subject;
-    Given(function() { this.subject = tetrominoes.model; });
+    Given(function() { this.subject = tetrominoes.Model.beget(); });
     describe(".init", function() {
         var view;
         Given(function() {
@@ -29,10 +29,10 @@ describe("tetrominoes.model", function() {
     });
 });
 
-describe("model.Shape", function() {
-    describe(".spawn", function() {
+describe("model.shape", function() {
+    describe("constructor", function() {
         context("with only one block", function() {
-            When(function() { this.shape = model.Shape.spawn({blocks: [["X"]]}) });
+            When(function() { this.shape = model.Shape.beget({blocks: [["X"]]}) });
             Then(function() { return this.shape.positions[0].blocks[0].x === 0 });
             Then(function() { return this.shape.positions[0].blocks[0].y === 0 });
             Then(function() { return this.shape.positions.length === 1 });
@@ -40,13 +40,13 @@ describe("model.Shape", function() {
         });
 
         context("with blocks in a horizontal line", function() {
-            When(function() { this.shape = model.Shape.spawn({blocks: [["XXXX"]]}) });
+            When(function() { this.shape = model.Shape.beget({blocks: [["XXXX"]]}) });
             Then(function() { return this.shape.positions[0].blocks[3].x === 3 });
             Then(function() { return this.shape.positions[0].blocks[3].y === 0 });
         });
 
         context("with blocks in a vertical line", function() {
-            When(function() { this.shape = model.Shape.spawn({blocks: [["X",
+            When(function() { this.shape = model.Shape.beget({blocks: [["X",
                                                                         "X",
                                                                         "X"]]}) });
             Then(function() { return this.shape.positions[0].blocks[2].x === 0 });
@@ -54,14 +54,14 @@ describe("model.Shape", function() {
         });
 
         context("with a zigzag shape", function() {
-            When(function() { this.shape = model.Shape.spawn({blocks: [["XX",
+            When(function() { this.shape = model.Shape.beget({blocks: [["XX",
                                                                         " XX"]]}) });
             Then(function() { return this.shape.positions[0].blocks[3].x === 2 });
             Then(function() { return this.shape.positions[0].blocks[3].y === 1 });
         });
 
         context("with a zigzag shape and an origin point", function() {
-            When(function() { this.shape = model.Shape.spawn({blocks: [["XX",
+            When(function() { this.shape = model.Shape.beget({blocks: [["XX",
                                                                         " OX"]]}) });
             Then(function() { return this.shape.positions[0].blocks[0].x === -1 });
             Then(function() { return this.shape.positions[0].blocks[0].y === -1 });
@@ -76,7 +76,7 @@ describe("model.Shape", function() {
         });
 
         context("with a zigzag shape and an 'invisible' origin point", function() {
-            When(function() { this.shape = model.Shape.spawn({blocks: [["XX",
+            When(function() { this.shape = model.Shape.beget({blocks: [["XX",
                                                                         ".XX"]]}) });
 
             Then(function() { return this.shape.positions[0].blocks[0].x === 0 });
@@ -86,7 +86,7 @@ describe("model.Shape", function() {
         });
 
         context("with a zigzag shape and two positions ", function() {
-            When(function() { this.shape = model.Shape.spawn({blocks: [["XX",
+            When(function() { this.shape = model.Shape.beget({blocks: [["XX",
                                                                         " OX"],
 
                                                                        [" X",
