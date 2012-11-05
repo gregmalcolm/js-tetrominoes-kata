@@ -1,28 +1,38 @@
 var app = tetrominoes;
 var view = {};
 
-view.well = {
+view.Well = {
+    view: null,
+
+    beget: function(view) {
+        var self = Object.create(this);
+
+        self.view = view;
+
+        return self;
+    },
+
     render: function() {
-        app.view.context.fillStyle = '#CCC';
+        this.view.context.fillStyle = '#CCC';
 
-        var blockWidth  = app.view.model.blockWidth;
-        var blockHeight = app.view.model.blockHeight;
-        var width       = app.view.model.widthInBlocks;
-        var height      = app.view.model.heightInBlocks;
+        var blockWidth  = this.view.model.blockWidth;
+        var blockHeight = this.view.model.blockHeight;
+        var width       = this.view.model.widthInBlocks;
+        var height      = this.view.model.heightInBlocks;
 
-        app.view.context
+        this.view.context
                 .fillRect(blockWidth,
                           blockHeight,
                           blockWidth + 1,
                           (blockHeight * (height - 2)) + 1);
 
-        app.view.context
+        this.view.context
                 .fillRect(blockWidth * 2,
                           blockHeight * (height - 2),
                           (blockWidth * (width - 4)) + 1,
                           blockHeight + 1);
 
-        app.view.context
+        this.view.context
                 .fillRect(blockWidth * (width - 2),
                           blockHeight,
                           blockWidth + 1,
@@ -30,18 +40,23 @@ view.well = {
     }
 };
 
-app.view = {
-    model: undefined,
+app.View = {
+    model: null,
 
-    canvas: undefined,
-    context: undefined,
+    canvas: null,
+    context: null,
 
-    well: view.well,
+    well: null,
 
-    init: function(model) {
-        this.model = model;
-        this.canvas = $('canvas#mainGame')[0]
-        this.context = this.canvas.getContext('2d');
+    beget: function(model) {
+        var self = Object.create(this);
+
+        self.model = model;
+        self.canvas = $('canvas#mainGame')[0]
+        self.context = self.canvas.getContext('2d');
+        self.well = view.Well.beget(self);
+
+        return self;
     },
 
     clear: function() {

@@ -4,9 +4,8 @@ Object.prototype.beget = function() {
 
 var tetrominoes = {};
 var app = tetrominoes;
-app.view = {};
-app.model = {};
 
 app.start = function() {
-    game = app.game.run();
+    var game = app.Game.beget();
+    game.run();
 };

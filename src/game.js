@@ -1,15 +1,16 @@
 var app = tetrominoes;
 
-app.game = {
-    model : undefined,
+app.Game = {
+    model : null,
+    view : null,
 
     run : function() {
         this.model = app.Model.beget();
-        app.view.init(this.model);
+        this.view =  app.View.beget(this.model);
 
-        this.model.init(app.view);
+        this.model.init(this.view);
 
-        app.view.renderBackground();
+        this.view.renderBackground();
     }
 }
 

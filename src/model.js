@@ -2,10 +2,10 @@ var app = tetrominoes;
 var model = {};
 
 app.Model = {
-    canvasWidth : undefined,
-    canvasHeight : undefined,
-    blockWidth : undefined,
-    blockHeight : undefined,
+    canvasWidth : null,
+    canvasHeight : null,
+    blockWidth : null,
+    blockHeight : null,
     widthInBlocks : 14,
     heightInBlocks : 17,
     shapes : [],
@@ -168,7 +168,7 @@ model.shapes = function() {
 };
 
 model.Player = {
-    x : undefined,
+    x : null,
     y : 0,
     position_num : undefined,
     shape: undefined,
