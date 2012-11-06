@@ -1,7 +1,8 @@
 var app = tetrominoes;
-var model = {};
+app.model = {};
+var model = app.model;
 
-app.Model = {
+model.Game = {
     canvasWidth : null,
     canvasHeight : null,
     blockWidth : null,
@@ -14,6 +15,7 @@ app.Model = {
     init: function(view) {
         this.initMetrics(view);
         this.shapes = model.shapes();
+        this.player = model.Player.beget();
     },
 
     initMetrics: function(view) {
@@ -170,6 +172,12 @@ model.shapes = function() {
 model.Player = {
     x : null,
     y : 0,
-    position_num : undefined,
-    shape: undefined,
+    position_num : null,
+    shape: null,
+
+    beget: function() {
+        var self = Object.create(this);
+
+        return self;
+    },
 };

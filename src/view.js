@@ -1,5 +1,36 @@
 var app = tetrominoes;
-var view = {};
+app.view = {};
+var view = app.view;
+
+view.Game = {
+    model: null,
+
+    canvas: null,
+    context: null,
+
+    well: null,
+
+    beget: function(model) {
+        var self = Object.create(this);
+
+        self.model = model;
+        self.canvas = $('canvas#mainGame')[0]
+        self.context = self.canvas.getContext('2d');
+        self.well = view.Well.beget(self);
+
+        return self;
+    },
+
+    clear: function() {
+        this.context.fillStyle = 'black';
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+
+    renderBackground: function() {
+        this.clear();
+        this.well.render();
+    },
+};
 
 view.Well = {
     view: null,
@@ -38,36 +69,6 @@ view.Well = {
                           blockWidth + 1,
                            (blockHeight * (height - 2)) + 1);
     }
-};
-
-app.View = {
-    model: null,
-
-    canvas: null,
-    context: null,
-
-    well: null,
-
-    beget: function(model) {
-        var self = Object.create(this);
-
-        self.model = model;
-        self.canvas = $('canvas#mainGame')[0]
-        self.context = self.canvas.getContext('2d');
-        self.well = view.Well.beget(self);
-
-        return self;
-    },
-
-    clear: function() {
-        this.context.fillStyle = 'black';
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    },
-
-    renderBackground: function() {
-        this.clear();
-        this.well.render();
-    },
 };
 
 

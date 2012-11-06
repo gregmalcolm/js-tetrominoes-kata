@@ -5,8 +5,8 @@ app.Game = {
     view : null,
 
     run : function() {
-        this.model = app.Model.beget();
-        this.view =  app.View.beget(this.model);
+        this.model = app.model.Game.beget();
+        this.view =  app.view.Game.beget(this.model);
 
         this.model.init(this.view);
 
