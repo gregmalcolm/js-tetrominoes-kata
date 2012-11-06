@@ -9,13 +9,15 @@ model.Game = {
     blockHeight : null,
     widthInBlocks : 14,
     heightInBlocks : 17,
+    well : null,
     shapes : [],
     player : [],
 
     init: function(view) {
         this.initMetrics(view);
+        this.well = model.well;
         this.shapes = model.shapes();
-        this.player = model.Player.beget();
+        this.player = model.Player.beget(this);
     },
 
     initMetrics: function(view) {
@@ -24,6 +26,12 @@ model.Game = {
         this.blockWidth = this.canvasWidth / this.widthInBlocks;
         this.blockHeight = this.canvasHeight / this.heightInBlocks;
     },
+};
+
+model.well = {
+    widthInBlocks: 10,
+    heightInBlocks: 15,
+    offset: { x: 1, y: 1},
 };
 
 model.Shape = {
@@ -170,14 +178,24 @@ model.shapes = function() {
 };
 
 model.Player = {
+    model : null,
     x : null,
     y : 0,
     position_num : null,
     shape: null,
 
-    beget: function() {
+    beget: function(model) {
         var self = Object.create(this);
+
+        self.model = model;
+        self.x = (model.well.widthInBlocks / 2) - 1;
+        self.y = 0;
+        self.position_num = this.randomPositionNum();
 
         return self;
     },
+
+    randomPositionNum: function() {
+        return app.util.randomInt(4);
+    }
 };

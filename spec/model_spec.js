@@ -1,6 +1,8 @@
-describe("tetrominoes.model.Game", function() {
+var model = tetrominoes.model;
+
+describe("model.Game", function() {
     var subject;
-    Given(function() { this.subject = tetrominoes.model.Game.beget(); });
+    Given(function() { this.subject = model.Game.beget(); });
     describe(".init", function() {
         var view;
         Given(function() {
@@ -100,9 +102,11 @@ describe("model.Shape", function() {
 });
 
 describe("model.Player", function() {
-//    var subject;
-//    Given(function() { this.subject = model. });
+    var subject;
+    Given(function() { this.model = model.Game.beget(); })
+    Given(function() { this.subject = model.Player.beget(model); });
 
-//    describe("construction", function() {
-//    });
+    describe("construction", function() {
+        Then(function() { expect(this.subject.x).toBe(4)});
+    });
 });
