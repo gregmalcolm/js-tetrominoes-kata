@@ -16,10 +16,10 @@ app.Game = {
     },
 
     start: function() {
-        var self = this;
+        var that = this;
 
         setInterval(function() {
-            return self.updateGame();
+            return that.updateGame();
         }, 20);
     },
 

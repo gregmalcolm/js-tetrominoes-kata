@@ -12,15 +12,15 @@ view.Game = {
     player: null,
 
     beget: function(model) {
-        var self = Object.create(this);
+        var that = Object.create(this);
 
-        self.model = model;
-        self.canvas = $('canvas#mainGame')[0]
-        self.context = self.canvas.getContext('2d');
-        self.well = view.Well.beget(self);
-        self.player = view.Player.beget(self);
+        that.model = model;
+        that.canvas = $('canvas#mainGame')[0]
+        that.context = that.canvas.getContext('2d');
+        that.well = view.Well.beget(that);
+        that.player = view.Player.beget(that);
 
-        return self;
+        return that;
     },
 
     clear: function() {
@@ -42,11 +42,11 @@ view.Well = {
     view: null,
 
     beget: function(view) {
-        var self = Object.create(this);
+        var that = Object.create(this);
 
-        self.view = view;
+        that.view = view;
 
-        return self;
+        return that;
     },
 
     render: function() {
@@ -81,11 +81,11 @@ view.Player = {
     view: null,
 
     beget: function(view) {
-        var self = Object.create(this);
+        var that = Object.create(this);
 
-        self.view = view;
+        that.view = view;
 
-        return self;
+        return that;
     },
 
     render: function() {

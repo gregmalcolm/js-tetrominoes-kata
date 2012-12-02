@@ -38,10 +38,10 @@ model.Shape = {
     positions: [],
 
     beget: function(args) {
-        var self = Object.create(this);
-        self.positions = self.calcPositions(args.blocks);
+        var that = Object.create(this);
+        that.positions = that.calcPositions(args.blocks);
 
-        return self;
+        return that;
     },
 
     calcPositions: function(blockPositions) {
@@ -85,9 +85,9 @@ model.Shape = {
 };
 
 model.shapes = function() {
-    var self = [];
+    var that = [];
 
-    self.push(model.Shape.beget({blocks:
+    that.push(model.Shape.beget({blocks:
         [["X",
           "O",
           "X",
@@ -96,7 +96,7 @@ model.shapes = function() {
          ["XOXX"]]})
     );
 
-    self.push(model.Shape.beget({blocks:
+    that.push(model.Shape.beget({blocks:
         [["X",
           "X",
           "O",
@@ -114,7 +114,7 @@ model.shapes = function() {
           "XXOX"]]})
     );
 
-    self.push(model.Shape.beget({blocks:
+    that.push(model.Shape.beget({blocks:
         [[" X",
           " X",
           " O",
@@ -132,7 +132,7 @@ model.shapes = function() {
           "   X"]]})
     );
 
-    self.push(model.Shape.beget({blocks:
+    that.push(model.Shape.beget({blocks:
         [["X",
           "OX",
           " X"],
@@ -141,7 +141,7 @@ model.shapes = function() {
           "XX"]]})
     );
 
-    self.push(model.Shape.beget({blocks:
+    that.push(model.Shape.beget({blocks:
         [[" X",
           "OX",
           "X"],
@@ -150,7 +150,7 @@ model.shapes = function() {
           " XX"]]})
     );
 
-    self.push(model.Shape.beget({blocks:
+    that.push(model.Shape.beget({blocks:
         [[" X",
           "XO",
           " X"],
@@ -166,15 +166,15 @@ model.shapes = function() {
           " X"]]})
     );
 
-    self.push(model.Shape.beget({blocks:
+    that.push(model.Shape.beget({blocks:
         [["XX",
           "OX"]]})
     );
 
     model.shapes = function() {
-        return self;
+        return that;
     };
-    return self;
+    return that;
 };
 
 model.Player = {
@@ -185,14 +185,14 @@ model.Player = {
     shape: null,
 
     beget: function(model) {
-        var self = Object.create(this);
+        var that = Object.create(this);
 
-        self.model = model;
-        self.x = (model.well.widthInBlocks / 2) - 1;
-        self.y = 0;
-        self.position_num = this.randomPositionNum();
+        that.model = model;
+        that.x = (model.well.widthInBlocks / 2) - 1;
+        that.y = 0;
+        that.position_num = this.randomPositionNum();
 
-        return self;
+        return that;
     },
 
     randomPositionNum: function() {
