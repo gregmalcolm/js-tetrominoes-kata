@@ -9,6 +9,7 @@ view.Game = {
     context: null,
 
     well: null,
+    player: null,
 
     beget: function(model) {
         var self = Object.create(this);
@@ -17,6 +18,7 @@ view.Game = {
         self.canvas = $('canvas#mainGame')[0]
         self.context = self.canvas.getContext('2d');
         self.well = view.Well.beget(self);
+        self.player = view.Player.beget(self);
 
         return self;
     },
@@ -29,6 +31,10 @@ view.Game = {
     renderBackground: function() {
         this.clear();
         this.well.render();
+    },
+
+    render: function() {
+        this.player.render();
     },
 };
 
@@ -71,4 +77,26 @@ view.Well = {
     }
 };
 
+view.Player = {
+    view: null,
 
+    beget: function(view) {
+        var self = Object.create(this);
+
+        self.view = view;
+
+        return self;
+    },
+
+    render: function() {
+        this.view.context.fillstyle = 'yellow';
+
+        var blockWidth  = this.view.model.blockWidth;
+        var blockHeight = this.view.model.blockHeight;
+
+        this.view.context.fillRect(blockWidth * 6,
+                                   blockHeight * 6,
+                                   blockWidth + 1,
+                                   blockHeight + 1);
+    },
+}
