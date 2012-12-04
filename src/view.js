@@ -3,21 +3,14 @@ app.view = {};
 var view = app.view;
 
 view.Game = {
-    model: null,
-
-    canvas: null,
-    context: null,
-
-    well: null,
-    player: null,
-
     beget: function(model) {
         var that = Object.create(this);
 
         that.model = model;
         that.canvas = $('canvas#mainGame')[0]
         that.context = that.canvas.getContext('2d');
-        that.well = view.Well.beget(that);
+
+		that.well = view.Well.beget(that);
         that.player = view.Player.beget(that);
 
         return that;
@@ -39,11 +32,8 @@ view.Game = {
 };
 
 view.Well = {
-    view: null,
-
     beget: function(view) {
         var that = Object.create(this);
-
         that.view = view;
 
         return that;
@@ -52,38 +42,36 @@ view.Well = {
     render: function() {
         this.view.context.fillStyle = '#CCC';
 
-        var blockWidth  = this.view.model.blockWidth;
-        var blockHeight = this.view.model.blockHeight;
-        var width       = this.view.model.widthInBlocks;
-        var height      = this.view.model.heightInBlocks;
+		var m = this.view.model;
+        var width       = m.widthInBlocks;
+        var height      = m.heightInBlocks;
 
         this.view.context
-                .fillRect(blockWidth,
-                          blockHeight,
-                          blockWidth + 1,
-                          (blockHeight * (height - 2)) + 1);
+                .fillRect(m.blockWidth,
+                          m.blockHeight,
+                          m.blockWidth + 1,
+                          (m.blockHeight * (height - 2)) + 1);
 
         this.view.context
-                .fillRect(blockWidth * 2,
-                          blockHeight * (height - 2),
-                          (blockWidth * (width - 4)) + 1,
-                          blockHeight + 1);
+                .fillRect(m.blockWidth * 2,
+                          m.blockHeight * (height - 2),
+                          (m.blockWidth * (width - 4)) + 1,
+                          m.blockHeight + 1);
 
         this.view.context
-                .fillRect(blockWidth * (width - 2),
-                          blockHeight,
-                          blockWidth + 1,
-                           (blockHeight * (height - 2)) + 1);
+                .fillRect(m.blockWidth * (width - 2),
+                          m.blockHeight,
+                          m.blockWidth + 1,
+                          (m.blockHeight * (height - 2)) + 1);
     }
 };
 
 view.Player = {
-    view: null,
-
     beget: function(view) {
         var that = Object.create(this);
 
         that.view = view;
+		that.model = view.model;
 
         return that;
     },
@@ -91,12 +79,14 @@ view.Player = {
     render: function() {
         this.view.context.fillstyle = 'yellow';
 
-        var blockWidth  = this.view.model.blockWidth;
-        var blockHeight = this.view.model.blockHeight;
+        player = this.model.player;
+		well = this.model.well;
 
-        this.view.context.fillRect(blockWidth * 6,
-                                   blockHeight * 6,
-                                   blockWidth + 1,
-                                   blockHeight + 1);
+		var m = this.model;
+
+        this.view.context.fillRect(m.blockWidth * 6,
+                                   m.blockHeight * 6,
+                                   m.blockWidth + 1,
+                                   m.blockHeight + 1);
     },
 }

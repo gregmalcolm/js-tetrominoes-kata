@@ -31,7 +31,7 @@ model.Game = {
 model.well = {
     widthInBlocks: 10,
     heightInBlocks: 15,
-    offset: { x: 1, y: 1},
+    offset: { x: 14, y: 17},
 };
 
 model.Shape = {
