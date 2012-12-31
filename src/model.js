@@ -15,7 +15,7 @@ model.Game = {
 
     init: function(view) {
         this.initMetrics(view);
-        this.well = model.well;
+        this.well = model.Well.beget();
         this.shapes = model.shapes();
         this.player = model.Player.beget(this);
     },
@@ -28,7 +28,7 @@ model.Game = {
     },
 };
 
-model.well = {
+model.Well = {
     widthInBlocks: 10,
     heightInBlocks: 15,
     offset: { x: 14, y: 17},
