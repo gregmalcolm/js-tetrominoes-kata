@@ -35,40 +35,40 @@ app.model.Well = {
 };
 
 app.model.Shape = {
-    positions: [],
+    rotations: [],
 
     beget: function(args) {
         var that = Object.create(this);
-        that.positions = that.calcPositions(args.blocks);
+        that.rotations = that.calcRotations(args.blocks);
 
         return that;
     },
 
-    calcPositions: function(blockPositions) {
-        var positions = [];
+    calcRotations: function(blockRotations) {
+        var rotations = [];
 
-        for(var pos = 0; pos < blockPositions.length; ++pos) {
-            positions.push(this.calcPosition(blockPositions[pos]));
+        for(var pos = 0; pos < blockRotations.length; ++pos) {
+            rotations.push(this.calcRotation(blockRotations[pos]));
         }
 
-        return positions;
+        return rotations;
     },
 
-    calcPosition: function(blocks) {
+    calcRotation: function(blocks) {
         var offsets = this.findBlockOffsets(blocks);
 
-        var position = { blocks: [] };
+        var rotation = { blocks: [] };
         for(var y = 0; y < blocks.length; ++y) {
             for(var x = 0; x < blocks[y].length; ++x) {
                 block = blocks[y][x];
                 if (!block.match(/[ .]/)) {
-                    position.blocks.push( {'x' : x - offsets.x,
+                    rotation.blocks.push( {'x' : x - offsets.x,
                                            'y' : y - offsets.y});
                 }
             }
         }
 
-        return position;
+        return rotation;
     },
 
     findBlockOffsets: function(blocks) {
@@ -125,7 +125,7 @@ app.model.shapes = function() {
           "X"],
 
          ["XOX",
-          "  X"]]})
+          "   X"]]})
     );
 
     that.push(app.model.Shape.beget({blocks:
@@ -178,7 +178,7 @@ app.model.Player = {
     model : null,
     x : null,
     y : 0,
-    positionNum : null,
+    rotationNum : null,
     shape: null,
 
     beget: function(model) {
@@ -190,12 +190,12 @@ app.model.Player = {
         return that;
     },
 
-    spawn: function(shape, positionNum) {
+    spawn: function(shape, rotationNum) {
         this.x = (this.model.well.widthInBlocks / 2) - 1;
         this.y = 0;
         this.shape = shape || this.randomShape();
-        this.positionNum = (typeof positionNum === "undefined")
-                           ? this.randomPositionNum() : positionNum;
+        this.rotationNum = (typeof rotationNum === "undefined")
+                           ? this.randomRotationNum() : rotationNum;
     },
 
     randomShape: function() {
@@ -203,23 +203,38 @@ app.model.Player = {
         return app.model.shapes()[shapeNum];
     },
 
-    randomPositionNum: function() {
-        return app.util.randomInt(this.maxPositions());
+    randomRotationNum: function() {
+        return app.util.randomInt(this.maxRotations());
     },
 
-    localPositionNum: function(positionNum) {
-        return positionNum % this.maxPositions();
+    localRotationNum: function(rotationNum) {
+        return rotationNum % this.maxRotations();
     },
 
-    maxPositions: function() {
-        return this.shape ? this.shape.positions.length : 1;
+    maxRotations: function() {
+        return this.shape ? this.shape.rotations.length : 1;
     },
 
     localBlocks: function() {
-        if (!this.shape || !this.shape.positions[this.positionNum]) {
+        if (!this.shape || !this.shape.rotations[this.rotationNum]) {
             return null;
         };
 
-        return this.shape.positions[this.positionNum].blocks;
+        return this.shape.rotations[this.rotationNum].blocks;
+    },
+
+    wellBlocks: function() {
+        var blocks = [];
+        var local = this.localBlocks();
+        var that = this;
+
+        for (var i=0; i < local.length; ++i) {
+            blocks[i] = {
+                            x: that.x + local[i].x,
+                            y: that.y + local[i].y
+                        };
+        }
+
+        return blocks;
     },
 };

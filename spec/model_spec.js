@@ -26,8 +26,8 @@ describe("tetrominoes.model", function() {
 
                 describe("#1", function() {
                     Given(function() { shape = subject.shapes[0] });
-                    Then(function() { return shape.positions[1].blocks[3].x === 2; } );
-                    Then(function() { return shape.positions[1].blocks[3].y === 0; } );
+                    Then(function() { return shape.rotations[1].blocks[3].x === 2; } );
+                    Then(function() { return shape.rotations[1].blocks[3].y === 0; } );
                 });
             });
         });
@@ -37,67 +37,67 @@ describe("tetrominoes.model", function() {
         describe("construction", function() {
             context("with only one block", function() {
                 When(function() { subject = app.model.Shape.beget({blocks: [["X"]]}) });
-                Then(function() { return subject.positions[0].blocks[0].x === 0 });
-                Then(function() { return subject.positions[0].blocks[0].y === 0 });
-                Then(function() { return subject.positions.length === 1 });
-                Then(function() { return subject.positions[0].blocks.length === 1 });
+                Then(function() { return subject.rotations[0].blocks[0].x === 0 });
+                Then(function() { return subject.rotations[0].blocks[0].y === 0 });
+                Then(function() { return subject.rotations.length === 1 });
+                Then(function() { return subject.rotations[0].blocks.length === 1 });
             });
 
             context("with blocks in a horizontal line", function() {
                 When(function() { subject = app.model.Shape.beget({blocks: [["XXXX"]]}) });
-                Then(function() { return subject.positions[0].blocks[3].x === 3 });
-                Then(function() { return subject.positions[0].blocks[3].y === 0 });
+                Then(function() { return subject.rotations[0].blocks[3].x === 3 });
+                Then(function() { return subject.rotations[0].blocks[3].y === 0 });
             });
 
             context("with blocks in a vertical line", function() {
                 When(function() { subject = app.model.Shape.beget({blocks: [["X",
                                                                               "X",
                                                                               "X"]]}) });
-                Then(function() { return subject.positions[0].blocks[2].x === 0 });
-                Then(function() { return subject.positions[0].blocks[2].y === 2 });
+                Then(function() { return subject.rotations[0].blocks[2].x === 0 });
+                Then(function() { return subject.rotations[0].blocks[2].y === 2 });
             });
 
             context("with a zigzag shape", function() {
                 When(function() { subject = app.model.Shape.beget({blocks: [["XX",
                                                                               " XX"]]}) });
-                Then(function() { return subject.positions[0].blocks[3].x === 2 });
-                Then(function() { return subject.positions[0].blocks[3].y === 1 });
+                Then(function() { return subject.rotations[0].blocks[3].x === 2 });
+                Then(function() { return subject.rotations[0].blocks[3].y === 1 });
             });
 
             context("with a zigzag shape and an origin point", function() {
                 When(function() { subject = app.model.Shape.beget({blocks: [["XX",
                                                                               " OX"]]}) });
-                Then(function() { return subject.positions[0].blocks[0].x === -1 });
-                Then(function() { return subject.positions[0].blocks[0].y === -1 });
+                Then(function() { return subject.rotations[0].blocks[0].x === -1 });
+                Then(function() { return subject.rotations[0].blocks[0].y === -1 });
 
-                Then(function() { return subject.positions[0].blocks[2].x === 0 });
-                Then(function() { return subject.positions[0].blocks[2].y === 0 });
+                Then(function() { return subject.rotations[0].blocks[2].x === 0 });
+                Then(function() { return subject.rotations[0].blocks[2].y === 0 });
 
-                Then(function() { return subject.positions[0].blocks[3].x === 1 });
-                Then(function() { return subject.positions[0].blocks[3].y === 0 });
+                Then(function() { return subject.rotations[0].blocks[3].x === 1 });
+                Then(function() { return subject.rotations[0].blocks[3].y === 0 });
 
-                Then(function() { return subject.positions[0].blocks.length === 4 });
+                Then(function() { return subject.rotations[0].blocks.length === 4 });
             });
 
             context("with a zigzag shape and an 'invisible' origin point", function() {
                 When(function() { subject = app.model.Shape.beget({blocks: [["XX",
                                                                               ".XX"]]}) });
 
-                Then(function() { return subject.positions[0].blocks[0].x === 0 });
-                Then(function() { return subject.positions[0].blocks[0].y === -1 });
+                Then(function() { return subject.rotations[0].blocks[0].x === 0 });
+                Then(function() { return subject.rotations[0].blocks[0].y === -1 });
 
-                Then(function() { return subject.positions[0].blocks.length === 4 });
+                Then(function() { return subject.rotations[0].blocks.length === 4 });
             });
 
-            context("with a zigzag shape and two positions ", function() {
+            context("with a zigzag shape and two rotations ", function() {
                 When(function() { subject = app.model.Shape.beget({blocks: [["XX",
                                                                               " OX"],
 
                                                                              [" X",
                                                                               "OX",
                                                                               "X"]]}) });
-                Then(function() { return subject.positions[1].blocks[3].x === 0 });
-                Then(function() { return subject.positions[1].blocks[3].y === 1 });
+                Then(function() { return subject.rotations[1].blocks[3].x === 0 });
+                Then(function() { return subject.rotations[1].blocks[3].y === 1 });
             });
         });
     });
@@ -105,60 +105,60 @@ describe("tetrominoes.model", function() {
     describe("Player", function() {
         var gameModel;
         var shape;
-        var positionNum;
+        var rotationNum;
 
         Given(function() { gameModel = app.model.Game.beget(); })
         Given(function() { gameModel.init(view); });
         Given(function() { subject = app.model.Player.beget(gameModel); });
         Given(function() { shape = app.model.shapes()[0]; });
-        Given(function() { positionNum = 0; });
+        Given(function() { rotationNum = 0; });
 
         describe("#spawn", function() {
             When(function() { subject.spawn(); });
             Then(function() { expect(subject.x).toBe(4); });
 
-            context("with the long narrow shape in vertical position", function() {
-                When(function() { subject.spawn(shape, positionNum); });
+            context("with the long narrow shape in vertical rotation", function() {
+                When(function() { subject.spawn(shape, rotationNum); });
 
                 Then(function() { expect(subject.shape).toBe(app.model.shapes()[0]); });
-                Then(function() { expect(subject.positionNum).toBe(0); });
+                Then(function() { expect(subject.rotationNum).toBe(0); });
             });
         });
 
-        describe("#localPositionNum", function() {
-            context("when the shape has 2 rotation positions", function() {
+        describe("#localRotationNum", function() {
+            context("when the shape has 2 rotation rotations", function() {
                 Given(function() { subject.shape = app.model.shapes()[0]; });
 
                 context("and wraparound occurs", function() {
-                    When(function() { positionNum = subject.localPositionNum(3) });
-                    Then(function() { expect(positionNum).toBe(1); });
+                    When(function() { rotationNum = subject.localRotationNum(3) });
+                    Then(function() { expect(rotationNum).toBe(1); });
                 });
 
                 context("and wraparound is unnecessary", function() {
-                    When(function() { positionNum = subject.localPositionNum(1) });
-                    Then(function() { expect(positionNum).toBe(1); });
+                    When(function() { rotationNum = subject.localRotationNum(1) });
+                    Then(function() { expect(rotationNum).toBe(1); });
                 });
             });
 
-            context("when the shape has 4 rotation positions", function() {
+            context("when the shape has 4 rotation rotations", function() {
                 Given(function() { subject.shape = app.model.shapes()[1]; });
 
                 context("and wraparound occurs", function() {
-                    When(function() { positionNum = subject.localPositionNum(10) });
-                    Then(function() { expect(positionNum).toBe(2); });
+                    When(function() { rotationNum = subject.localRotationNum(10) });
+                    Then(function() { expect(rotationNum).toBe(2); });
                 });
 
                 context("and wraparound is unnecessary", function() {
-                    When(function() { positionNum = subject.localPositionNum(3) });
-                    Then(function() { expect(positionNum).toBe(3); });
+                    When(function() { rotationNum = subject.localRotationNum(3) });
+                    Then(function() { expect(rotationNum).toBe(3); });
                 });
             });
         });
 
         describe("#localBlocks", function() {
             Given(function() { shape = app.model.shapes()[3]; });
-            Given(function() { positionNum = 1; });
-            Given(function() { subject.spawn(shape, positionNum); });
+            Given(function() { rotationNum = 1; });
+            Given(function() { subject.spawn(shape, rotationNum); });
 
             When(function() { blocks = subject.localBlocks(); });
 
@@ -167,6 +167,22 @@ describe("tetrominoes.model", function() {
 
             Then(function() { expect(blocks[2].x).toBe(-1); });
             Then(function() { expect(blocks[2].y).toBe(1); });
+        });
+
+        describe("#wellBlocks", function() {
+            Given(function() { shape = app.model.shapes()[3]; });
+            Given(function() { rotationNum = 1; });
+            Given(function() { subject.spawn(shape, rotationNum); });
+            Given(function() { subject.x = 4; });
+            Given(function() { subject.y = 8; });
+
+            When(function() { blocks = subject.wellBlocks(); });
+
+            Then(function() { console.log(blocks); expect(blocks[1].x).toBe(5); });
+            Then(function() { expect(blocks[1].y).toBe(8); });
+
+            Then(function() { expect(blocks[2].x).toBe(3); });
+            Then(function() { expect(blocks[2].y).toBe(9); });
         });
     });
 });
