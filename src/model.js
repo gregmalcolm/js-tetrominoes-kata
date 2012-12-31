@@ -98,38 +98,34 @@ app.model.shapes = function() {
 
     that.push(app.model.Shape.beget({blocks:
         [["X",
-          "X",
           "O",
           "XX"],
 
-         ["XOXX",
+         ["XOX",
           "X"],
 
          ["XX",
           " O",
-          " X",
           " X"],
 
-         ["   X",
-          "XXOX"]]})
+         ["  X",
+          "XOX"]]})
     );
 
     that.push(app.model.Shape.beget({blocks:
         [[" X",
-          " X",
           " O",
           "XX"],
 
          ["X",
-          "XOXX"],
+          "XOX"],
 
          ["XX",
           "O",
-          "X",
           "X"],
 
-         ["XXOX",
-          "   X"]]})
+         ["XOX",
+          "  X"]]})
     );
 
     that.push(app.model.Shape.beget({blocks:
@@ -198,12 +194,13 @@ app.model.Player = {
         this.x = (this.model.well.widthInBlocks / 2) - 1;
         this.y = 0;
         this.shape = shape || this.randomShape();
-        this.positionNum = positionNum || this.randomPositionNum();
+        this.positionNum = (typeof positionNum === "undefined")
+                           ? this.randomPositionNum() : positionNum;
     },
 
     randomShape: function() {
-      var shapeNum = app.util.randomInt(app.model.shapes().length);
-      return app.model.shapes()[shapeNum];
+        var shapeNum = app.util.randomInt(app.model.shapes().length);
+        return app.model.shapes()[shapeNum];
     },
 
     randomPositionNum: function() {
@@ -216,5 +213,13 @@ app.model.Player = {
 
     maxPositions: function() {
         return this.shape ? this.shape.positions.length : 1;
+    },
+
+    localBlocks: function() {
+        if (!this.shape || !this.shape.positions[this.positionNum]) {
+            return null;
+        };
+
+        return this.shape.positions[this.positionNum].blocks;
     },
 };

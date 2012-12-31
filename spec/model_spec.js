@@ -110,14 +110,14 @@ describe("tetrominoes.model", function() {
         Given(function() { gameModel = app.model.Game.beget(); })
         Given(function() { gameModel.init(view); });
         Given(function() { subject = app.model.Player.beget(gameModel); });
+        Given(function() { shape = app.model.shapes()[0]; });
+        Given(function() { positionNum = 0; });
 
         describe("#spawn", function() {
             When(function() { subject.spawn(); });
             Then(function() { expect(subject.x).toBe(4); });
 
             context("with the long narrow shape in vertical position", function() {
-                Given(function() { shape = app.model.shapes()[0]; });
-                Given(function() { positionNum = 0; });
                 When(function() { subject.spawn(shape, positionNum); });
 
                 Then(function() { expect(subject.shape).toBe(app.model.shapes()[0]); });
@@ -126,8 +126,6 @@ describe("tetrominoes.model", function() {
         });
 
         describe("#localPositionNum", function() {
-            var positionNum;
-
             context("when the shape has 2 rotation positions", function() {
                 Given(function() { subject.shape = app.model.shapes()[0]; });
 
@@ -155,6 +153,20 @@ describe("tetrominoes.model", function() {
                     Then(function() { expect(positionNum).toBe(3); });
                 });
             });
+        });
+
+        describe("#localBlocks", function() {
+            Given(function() { shape = app.model.shapes()[3]; });
+            Given(function() { positionNum = 1; });
+            Given(function() { subject.spawn(shape, positionNum); });
+
+            When(function() { blocks = subject.localBlocks(); });
+
+            Then(function() { expect(blocks[1].x).toBe(1); });
+            Then(function() { expect(blocks[1].y).toBe(0); });
+
+            Then(function() { expect(blocks[2].x).toBe(-1); });
+            Then(function() { expect(blocks[2].y).toBe(1); });
         });
     });
 });

@@ -81,11 +81,10 @@ app.view.Player = {
         player = this.model.player;
 		well = this.model.well;
 
-		var m = this.model;
-
-        this.view.context.fillRect(m.blockWidth * 6,
-                                   m.blockHeight * 6,
-                                   m.blockWidth + 1,
-                                   m.blockHeight + 1);
+		//var m = this.model;
+        //this.view.context.fillRect(m.blockWidth * 6,
+                                   //m.blockHeight * 6,
+                                   //m.blockWidth + 1,
+                                   //m.blockHeight + 1);
     },
 }
