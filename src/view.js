@@ -1,8 +1,7 @@
 var app = tetrominoes;
 app.view = {};
-var view = app.view;
 
-view.Game = {
+app.view.Game = {
     beget: function(model) {
         var that = Object.create(this);
 
@@ -10,8 +9,8 @@ view.Game = {
         that.canvas = $('canvas#mainGame')[0]
         that.context = that.canvas.getContext('2d');
 
-		that.well = view.Well.beget(that);
-        that.player = view.Player.beget(that);
+		that.well = app.view.Well.beget(that);
+        that.player = app.view.Player.beget(that);
 
         return that;
     },
@@ -31,7 +30,7 @@ view.Game = {
     },
 };
 
-view.Well = {
+app.view.Well = {
     beget: function(view) {
         var that = Object.create(this);
         that.view = view;
@@ -66,7 +65,7 @@ view.Well = {
     }
 };
 
-view.Player = {
+app.view.Player = {
     beget: function(view) {
         var that = Object.create(this);
 

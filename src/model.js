@@ -2,7 +2,7 @@ var app = tetrominoes;
 app.model = {};
 var model = app.model;
 
-model.Game = {
+app.model.Game = {
     canvasWidth : null,
     canvasHeight : null,
     blockWidth : null,
@@ -15,9 +15,9 @@ model.Game = {
 
     init: function(view) {
         this.initMetrics(view);
-        this.well = model.Well.beget();
-        this.shapes = model.shapes();
-        this.player = model.Player.beget(this);
+        this.well = app.model.Well.beget();
+        this.shapes = app.model.shapes();
+        this.player = app.model.Player.beget(this);
     },
 
     initMetrics: function(view) {
@@ -28,13 +28,13 @@ model.Game = {
     },
 };
 
-model.Well = {
+app.model.Well = {
     widthInBlocks: 10,
     heightInBlocks: 15,
     offset: { x: 14, y: 17},
 };
 
-model.Shape = {
+app.model.Shape = {
     positions: [],
 
     beget: function(args) {
@@ -84,10 +84,10 @@ model.Shape = {
     }
 };
 
-model.shapes = function() {
+app.model.shapes = function() {
     var that = [];
 
-    that.push(model.Shape.beget({blocks:
+    that.push(app.model.Shape.beget({blocks:
         [["X",
           "O",
           "X",
@@ -96,7 +96,7 @@ model.shapes = function() {
          ["XOXX"]]})
     );
 
-    that.push(model.Shape.beget({blocks:
+    that.push(app.model.Shape.beget({blocks:
         [["X",
           "X",
           "O",
@@ -114,7 +114,7 @@ model.shapes = function() {
           "XXOX"]]})
     );
 
-    that.push(model.Shape.beget({blocks:
+    that.push(app.model.Shape.beget({blocks:
         [[" X",
           " X",
           " O",
@@ -132,7 +132,7 @@ model.shapes = function() {
           "   X"]]})
     );
 
-    that.push(model.Shape.beget({blocks:
+    that.push(app.model.Shape.beget({blocks:
         [["X",
           "OX",
           " X"],
@@ -141,7 +141,7 @@ model.shapes = function() {
           "XX"]]})
     );
 
-    that.push(model.Shape.beget({blocks:
+    that.push(app.model.Shape.beget({blocks:
         [[" X",
           "OX",
           "X"],
@@ -150,7 +150,7 @@ model.shapes = function() {
           " XX"]]})
     );
 
-    that.push(model.Shape.beget({blocks:
+    that.push(app.model.Shape.beget({blocks:
         [[" X",
           "XO",
           " X"],
@@ -166,18 +166,18 @@ model.shapes = function() {
           " X"]]})
     );
 
-    that.push(model.Shape.beget({blocks:
+    that.push(app.model.Shape.beget({blocks:
         [["XX",
           "OX"]]})
     );
 
-    model.shapes = function() {
+    app.model.shapes = function() {
         return that;
     };
     return that;
 };
 
-model.Player = {
+app.model.Player = {
     model : null,
     x : null,
     y : 0,
