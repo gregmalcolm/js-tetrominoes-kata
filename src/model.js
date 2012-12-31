@@ -174,6 +174,7 @@ app.model.shapes = function() {
     app.model.shapes = function() {
         return that;
     };
+
     return that;
 };
 
@@ -181,21 +182,39 @@ app.model.Player = {
     model : null,
     x : null,
     y : 0,
-    position_num : null,
+    positionNum : null,
     shape: null,
 
     beget: function(model) {
         var that = Object.create(this);
 
         that.model = model;
-        that.x = (model.well.widthInBlocks / 2) - 1;
-        that.y = 0;
-        that.position_num = this.randomPositionNum();
+        that.spawn();
 
         return that;
     },
 
+    spawn: function(shape, positionNum) {
+        this.x = (this.model.well.widthInBlocks / 2) - 1;
+        this.y = 0;
+        this.shape = shape || this.randomShape();
+        this.positionNum = positionNum || this.randomPositionNum();
+    },
+
+    randomShape: function() {
+      var shapeNum = app.util.randomInt(app.model.shapes().length);
+      return app.model.shapes()[shapeNum];
+    },
+
     randomPositionNum: function() {
-        return app.util.randomInt(4);
-    }
+        return app.util.randomInt(this.maxPositions());
+    },
+
+    localPositionNum: function(positionNum) {
+        return positionNum % this.maxPositions();
+    },
+
+    maxPositions: function() {
+        return this.shape ? this.shape.positions.length : 1;
+    },
 };

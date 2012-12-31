@@ -1,13 +1,13 @@
 var app = tetrominoes;
 
 describe("tetrominoes.model", function() {
+    var subject;
     var view;
     Given(function() {
         view = { canvas: { width: 504, height: 612} }
     });
 
     describe("Game", function() {
-        var subject;
         Given(function() { subject = app.model.Game.beget(); });
         describe(".init", function() {
 
@@ -34,7 +34,6 @@ describe("tetrominoes.model", function() {
     });
 
     describe("Shape", function() {
-        var subject;
         describe("construction", function() {
             context("with only one block", function() {
                 When(function() { subject = app.model.Shape.beget({blocks: [["X"]]}) });
@@ -104,14 +103,58 @@ describe("tetrominoes.model", function() {
     });
 
     describe("Player", function() {
-        var subject, gameModel;
+        var gameModel;
+        var shape;
+        var positionNum;
 
         Given(function() { gameModel = app.model.Game.beget(); })
         Given(function() { gameModel.init(view); });
         Given(function() { subject = app.model.Player.beget(gameModel); });
 
-        describe("construction", function() {
-            Then(function() { expect(subject.x).toBe(4)});
+        describe("#spawn", function() {
+            When(function() { subject.spawn(); });
+            Then(function() { expect(subject.x).toBe(4); });
+
+            context("with the long narrow shape in vertical position", function() {
+                Given(function() { shape = app.model.shapes()[0]; });
+                Given(function() { positionNum = 0; });
+                When(function() { subject.spawn(shape, positionNum); });
+
+                Then(function() { expect(subject.shape).toBe(app.model.shapes()[0]); });
+                Then(function() { expect(subject.positionNum).toBe(0); });
+            });
+        });
+
+        describe("#localPositionNum", function() {
+            var positionNum;
+
+            context("when the shape has 2 rotation positions", function() {
+                Given(function() { subject.shape = app.model.shapes()[0]; });
+
+                context("and wraparound occurs", function() {
+                    When(function() { positionNum = subject.localPositionNum(3) });
+                    Then(function() { expect(positionNum).toBe(1); });
+                });
+
+                context("and wraparound is unnecessary", function() {
+                    When(function() { positionNum = subject.localPositionNum(1) });
+                    Then(function() { expect(positionNum).toBe(1); });
+                });
+            });
+
+            context("when the shape has 4 rotation positions", function() {
+                Given(function() { subject.shape = app.model.shapes()[1]; });
+
+                context("and wraparound occurs", function() {
+                    When(function() { positionNum = subject.localPositionNum(10) });
+                    Then(function() { expect(positionNum).toBe(2); });
+                });
+
+                context("and wraparound is unnecessary", function() {
+                    When(function() { positionNum = subject.localPositionNum(3) });
+                    Then(function() { expect(positionNum).toBe(3); });
+                });
+            });
         });
     });
 });
