@@ -38,6 +38,58 @@ app.view.Well = {
         return that;
     },
 
+    margin: function() {
+        var margin = {};
+        margin.width = this.view.model.blockWidth;
+        margin.height = this.view.model.blockHeight;
+
+        return margin;
+    },
+
+    padding: function() {
+        var padding = {};
+        padding.width = 2;
+        padding.height = 2;
+
+        return padding;
+    },
+
+    wall: function() {
+        var wall = {};
+        wall.width = this.view.model.blockWidth - this.padding().width;
+        wall.height = this.view.model.blockHeight - this.padding().height;
+        wall.left = this.margin().width;
+        wall.top = this.margin().height;
+        wall.right = this.view.canvas.width - wall.left;
+        wall.bottom = this.view.canvas.height - wall.top;
+
+        return wall;
+    },
+
+    left: function() {
+        return this.margin().width + this.wall().width + this.padding().width;
+    },
+
+    top: function() {
+        return this.margin().height + this.wall().height + this.padding().height;
+    },
+
+    right : function() {
+        return this.view.canvas.width - this.left();
+    },
+
+    bottom : function() {
+        return this.view.canvas.height - this.top();
+    },
+
+    width : function() {
+        return this.right() - this.left();
+    },
+
+    height : function() {
+        return this.bottom - this.left();
+    },
+
     render: function() {
         this.view.context.fillStyle = '#CCC';
 
@@ -46,22 +98,22 @@ app.view.Well = {
         var height      = m.heightInBlocks;
 
         this.view.context
-                .fillRect(m.blockWidth,
-                          m.blockHeight,
-                          m.blockWidth + 1,
-                          (m.blockHeight * (height - 2)) + 1);
+                .fillRect(this.wall().left,
+                          this.wall().top,
+                          this.wall().width + 1,
+                          (this.wall().bottom - this.wall().top) + 1);
 
         this.view.context
-                .fillRect(m.blockWidth * 2,
-                          m.blockHeight * (height - 2),
-                          (m.blockWidth * (width - 4)) + 1,
-                          m.blockHeight + 1);
+                .fillRect(this.wall().left,
+                          this.wall().bottom - this.wall().height,
+                          (this.wall().right - this.wall().left) + 1,
+                          this.wall().height + 1);
 
         this.view.context
-                .fillRect(m.blockWidth * (width - 2),
-                          m.blockHeight,
-                          m.blockWidth + 1,
-                          (m.blockHeight * (height - 2)) + 1);
+                .fillRect(this.wall().right - this.wall().width,
+                          this.wall().top,
+                          this.wall().width + 1,
+                          (this.wall().bottom - this.wall().top) + 1);
     }
 };
 
@@ -76,15 +128,19 @@ app.view.Player = {
     },
 
     render: function() {
+		var m = this.model;
+        var player = m.player;
+		var wellView = this.view.well;
+        var blocks = player.wellBlocks();
+
         this.view.context.fillstyle = 'yellow';
 
-        player = this.model.player;
-		well = this.model.well;
-
-		//var m = this.model;
-        //this.view.context.fillRect(m.blockWidth * 6,
-                                   //m.blockHeight * 6,
-                                   //m.blockWidth + 1,
-                                   //m.blockHeight + 1);
+        for (var i = 0; i < blocks.length; ++i) {
+            var block = blocks[i];
+            this.view.context.fillRect(wellView.left() + (m.blockWidth * block.x) + 1,
+                                       wellView.top() + (m.blockHeight * block.y) + 1,
+                                       m.blockWidth - 1,
+                                       m.blockHeight - 1);
+        };
     },
 }

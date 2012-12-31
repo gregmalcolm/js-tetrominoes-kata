@@ -31,7 +31,6 @@ app.model.Game = {
 app.model.Well = {
     widthInBlocks: 10,
     heightInBlocks: 15,
-    offset: { x: 14, y: 17},
 };
 
 app.model.Shape = {
@@ -125,7 +124,7 @@ app.model.shapes = function() {
           "X"],
 
          ["XOX",
-          "   X"]]})
+          "  X"]]})
     );
 
     that.push(app.model.Shape.beget({blocks:
