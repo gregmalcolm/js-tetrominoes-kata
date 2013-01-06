@@ -26,6 +26,7 @@ app.view.Game = {
     },
 
     render: function() {
+        this.renderBackground();
         this.player.render();
     },
 };
@@ -71,7 +72,7 @@ app.view.Well = {
     },
 
     top: function() {
-        return this.margin().height + this.wall().height + this.padding().height;
+        return this.margin().height;
     },
 
     right : function() {
@@ -133,7 +134,7 @@ app.view.Player = {
 		var wellView = this.view.well;
         var blocks = player.wellBlocks();
 
-        this.view.context.fillstyle = 'yellow';
+        this.view.context.fillStyle = 'yellow';
 
         for (var i = 0; i < blocks.length; ++i) {
             var block = blocks[i];

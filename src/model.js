@@ -191,10 +191,11 @@ app.model.Player = {
 
     spawn: function(shape, rotationNum) {
         this.x = (this.model.well.widthInBlocks / 2) - 1;
-        this.y = 0;
         this.shape = shape || this.randomShape();
         this.rotationNum = (typeof rotationNum === "undefined")
                            ? this.randomRotationNum() : rotationNum;
+
+        this.y = -(this.top());
     },
 
     randomShape: function() {
@@ -227,7 +228,7 @@ app.model.Player = {
         var local = this.localBlocks();
         var that = this;
 
-        for (var i=0; i < local.length; ++i) {
+        for (var i = 0; i < local.length; ++i) {
             blocks[i] = {
                             x: that.x + local[i].x,
                             y: that.y + local[i].y
@@ -235,5 +236,49 @@ app.model.Player = {
         }
 
         return blocks;
+    },
+
+    left: function() {
+        var left = 9999;
+        var blocks = this.wellBlocks();
+        for (var i = 0; i < blocks.length; ++i) {
+          if (blocks[i].x < left) {
+              left = blocks[i].x;
+          }
+        }
+        return left;
+    },
+
+    top: function() {
+        var top = 9999;
+        var blocks = this.wellBlocks();
+        for (var i = 0; i < blocks.length; ++i) {
+          if (blocks[i].y < top) {
+              top = blocks[i].y;
+          }
+        }
+        return top;
+    },
+
+    right: function() {
+        var right = -9999;
+        var blocks = this.wellBlocks();
+        for (var i = 0; i < blocks.length; ++i) {
+          if (blocks[i].x > right) {
+              right = blocks[i].x;
+          }
+        }
+        return right;
+    },
+
+    bottom: function() {
+        var bottom = -9999;
+        var blocks = this.wellBlocks();
+        for (var i = 0; i < blocks.length; ++i) {
+          if (blocks[i].y > bottom) {
+              bottom = blocks[i].y;
+          }
+        }
+        return bottom;
     },
 };

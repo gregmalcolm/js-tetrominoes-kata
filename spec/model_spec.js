@@ -110,7 +110,7 @@ describe("tetrominoes.model", function() {
         Given(function() { gameModel = app.model.Game.beget(); })
         Given(function() { gameModel.init(view); });
         Given(function() { subject = app.model.Player.beget(gameModel); });
-        Given(function() { shape = app.model.shapes()[0]; });
+        Given(function() { shape = app.model.shapes()[3]; });
         Given(function() { rotationNum = 0; });
 
         describe("#spawn", function() {
@@ -118,6 +118,7 @@ describe("tetrominoes.model", function() {
             Then(function() { expect(subject.x).toBe(4); });
 
             context("with the long narrow shape in vertical rotation", function() {
+                Given(function() { shape = app.model.shapes()[0]; });
                 When(function() { subject.spawn(shape, rotationNum); });
 
                 Then(function() { expect(subject.shape).toBe(app.model.shapes()[0]); });
@@ -156,7 +157,6 @@ describe("tetrominoes.model", function() {
         });
 
         describe("#localBlocks", function() {
-            Given(function() { shape = app.model.shapes()[3]; });
             Given(function() { rotationNum = 1; });
             Given(function() { subject.spawn(shape, rotationNum); });
 
@@ -170,7 +170,6 @@ describe("tetrominoes.model", function() {
         });
 
         describe("#wellBlocks", function() {
-            Given(function() { shape = app.model.shapes()[3]; });
             Given(function() { rotationNum = 1; });
             Given(function() { subject.spawn(shape, rotationNum); });
             Given(function() { subject.x = 4; });
@@ -178,11 +177,37 @@ describe("tetrominoes.model", function() {
 
             When(function() { blocks = subject.wellBlocks(); });
 
-            Then(function() { console.log(blocks); expect(blocks[1].x).toBe(5); });
+            Then(function() { expect(blocks[1].x).toBe(5); });
             Then(function() { expect(blocks[1].y).toBe(8); });
 
             Then(function() { expect(blocks[2].x).toBe(3); });
             Then(function() { expect(blocks[2].y).toBe(9); });
+        });
+
+        context("boundry positions", function() {
+            var left, top, right, bottom;
+            Given(function() { subject.spawn(shape, rotationNum); });
+            Given(function() { subject.y = 10 });
+
+            describe("#left", function() {
+                When(function() { left = subject.left(); });
+                Then(function() { expect(left).toBe(4); });
+            });
+
+            describe("#top", function() {
+                When(function() { top = subject.top(); });
+                Then(function() { expect(top).toBe(9); });
+            });
+
+            describe("#right", function() {
+                When(function() { right = subject.right(); });
+                Then(function() { expect(right).toBe(5); });
+            });
+
+            describe("#bottom", function() {
+                When(function() { bottom = subject.bottom(); });
+                Then(function() { expect(bottom).toBe(11); });
+            });
         });
     });
 });
