@@ -45,9 +45,9 @@ app.Game = {
 
     respond: function() {
         if (this.keys.left) {
-            --this.model.player.x;
+            this.model.player.slideLeft();
         } else if (this.keys.right) {
-            ++this.model.player.x;
+            this.model.player.slideRight();
         };
     },
 

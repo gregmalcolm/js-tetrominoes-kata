@@ -112,6 +112,7 @@ describe("tetrominoes.model", function() {
         Given(function() { subject = app.model.Player.beget(gameModel); });
         Given(function() { shape = app.model.shapes()[3]; });
         Given(function() { rotationNum = 0; });
+        Given(function() { subject.gameTime = function() { return 10000; }; });
 
         describe("#spawn", function() {
             When(function() { subject.spawn(); });
@@ -207,6 +208,56 @@ describe("tetrominoes.model", function() {
             describe("#bottom", function() {
                 When(function() { bottom = subject.bottom(); });
                 Then(function() { expect(bottom).toBe(11); });
+            });
+        });
+
+        describe("moving left", function() {
+            context("when enough time has elapsed", function() {
+                When(function() { canMove = subject.canMove(); });
+                Then(function() { expect(canMove).toBeTruthy(); });
+
+                context("when the player tries to move left", function() {
+                    When(function() { subject.slideLeft(); });
+                    Then(function() { expect(subject.x).toBe(3); });
+                    Then(function() { expect(subject.canMove()).toBeFalsy(); });
+                });
+            });
+
+            context("when too soon to move", function() {
+                Given(function() { subject.lastMoveTime = 9999; });
+                When(function() { subject.slideLeft(); });
+                Then(function() { expect(subject.canMove()).toBeFalsy(); });
+                Then(function() { expect(subject.x).toBe(4); });
+            });
+        });
+
+        describe("moving right", function() {
+            context("when enough time has elapsed", function() {
+                When(function() { canMove = subject.canMove(); });
+                Then(function() { expect(canMove).toBeTruthy(); });
+
+                context("when the player tries to move left", function() {
+                    When(function() { subject.slideRight(); });
+                    Then(function() { expect(subject.x).toBe(5); });
+                });
+            });
+
+            context("when too soon to move", function() {
+                Given(function() { subject.lastMoveTime = 9999; });
+                When(function() { subject.slideRight(); });
+                Then(function() { expect(subject.x).toBe(4); });
+            });
+        });
+
+        describe("#elapsedTime", function() {
+
+            context("for 500ms wait", function() {
+                When(function() { time = subject.elapsedTime(9500); });
+                Then(function() { expect(time).toBe(500) });
+            });
+            context("for 700ms wait", function() {
+                When(function() { time = subject.elapsedTime(9300); });
+                Then(function() { expect(time).toBe(700) });
             });
         });
     });

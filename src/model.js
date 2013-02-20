@@ -179,6 +179,7 @@ app.model.Player = {
     y : 0,
     rotationNum : null,
     shape: null,
+    lastMoveTime: 0,
 
     beget: function(model) {
         var that = Object.create(this);
@@ -281,4 +282,31 @@ app.model.Player = {
         }
         return bottom;
     },
+
+    slideLeft: function() {
+        this.slide(function(player) { --player.x; });
+    },
+
+    slideRight: function() {
+        this.slide(function(player) { ++player.x; });
+    },
+
+    slide: function(action) {
+        if (!this.canMove()) { return false };
+        action(this);
+        this.lastMoveTime = this.gameTime();
+        return true;
+    },
+
+    gameTime: function() {
+        return new Date().getTime();
+    },
+
+    elapsedTime: function(oldTime) {
+        return this.gameTime() - oldTime;
+    },
+
+    canMove: function() {
+        return this.elapsedTime(this.lastMoveTime) > 80;
+    }
 };
