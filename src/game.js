@@ -48,6 +48,14 @@ app.Game = {
             this.model.player.slideLeft();
         } else if (this.keys.right) {
             this.model.player.slideRight();
+        } else {
+            this.model.player.resetSlideDelay();
+        };
+
+        if (this.keys.up) {
+            this.model.player.rotate();
+        } else {
+            this.model.player.resetRotateDelay();
         };
     },
 
@@ -65,6 +73,11 @@ app.Game = {
                 that.keys.right = true;
                 that.keys.left = false;
                 break;
+
+            case that.keyCodes.up:
+            case that.keyCodes.w:
+                that.keys.up = true;
+                break;
         };
     },
 
@@ -80,8 +93,12 @@ app.Game = {
             case that.keyCodes.d:
                 that.keys.right = false;
                 break;
-        };
 
+            case that.keyCodes.up:
+            case that.keyCodes.w:
+                that.keys.up = false;
+                break;
+        };
     },
 
 }

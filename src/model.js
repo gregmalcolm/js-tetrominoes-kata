@@ -179,7 +179,8 @@ app.model.Player = {
     y : 0,
     rotationNum : null,
     shape: null,
-    lastMoveTime: 0,
+    lastSlideTime: 0,
+    lastRotateTime: 0,
 
     beget: function(model) {
         var that = Object.create(this);
@@ -283,18 +284,31 @@ app.model.Player = {
         return bottom;
     },
 
+    rotate: function() {
+        this.handleRotation(function(player) {
+            player.rotationNum = (player.rotationNum + 1) % player.maxRotations();
+        });
+    },
+
     slideLeft: function() {
-        this.slide(function(player) { --player.x; });
+        this.handleSlide(function(player) { --player.x; });
     },
 
     slideRight: function() {
-        this.slide(function(player) { ++player.x; });
+        this.handleSlide(function(player) { ++player.x; });
     },
 
-    slide: function(action) {
-        if (!this.canMove()) { return false };
+    handleSlide: function(action) {
+        if (!this.canSlide()) { return false };
         action(this);
-        this.lastMoveTime = this.gameTime();
+        this.lastSlideTime = this.gameTime();
+        return true;
+    },
+
+    handleRotation: function(action) {
+        if (!this.canRotate()) { return false };
+        action(this);
+        this.lastRotateTime = this.gameTime();
         return true;
     },
 
@@ -306,7 +320,19 @@ app.model.Player = {
         return this.gameTime() - oldTime;
     },
 
-    canMove: function() {
-        return this.elapsedTime(this.lastMoveTime) > 80;
-    }
+    canSlide: function() {
+        return this.elapsedTime(this.lastSlideTime) > 80;
+    },
+
+    canRotate: function() {
+        return this.elapsedTime(this.lastRotateTime) > 160;
+    },
+
+    resetSlideDelay: function() {
+        return this.lastSlideTime = 0;
+    },
+
+    resetRotateDelay: function() {
+        return this.lastRotateTime = 0;
+    },
 };
