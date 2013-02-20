@@ -17,6 +17,8 @@ app.model.Player = {
         that.model = model;
         that.spawn();
 
+        that.placement = app.model.Placement.beget(that);
+
         return that;
     },
 
@@ -163,6 +165,27 @@ app.model.Player = {
 
     resetRotateDelay: function() {
         return this.lastRotateTime = 0;
+    },
+};
+
+app.model.Placement = {
+    player: null,
+    _x: null,
+    _y: null,
+    _rotationNum: null,
+
+    beget: function(player) {
+        var that = Object.create(this);
+        that.player = player;
+        return that;
+    },
+
+    x: function() {
+        if (this._x) {
+            return this._x;
+        } else {
+            return this.player.x;
+        };
     },
 };
 

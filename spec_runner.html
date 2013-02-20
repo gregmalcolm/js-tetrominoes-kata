@@ -46,6 +46,13 @@
           currentWindowOnload();
         }
         execJasmine();
+        $('.jasmine_reporter .summary')
+          .css('float', 'left')
+          .after('<br/><br/><div>' +
+                 '<canvas id="mainGame" width="504" height="612"><\/canvas>' +
+                 '<\/div>');
+
+        app.start();
       };
 
       function execJasmine() {

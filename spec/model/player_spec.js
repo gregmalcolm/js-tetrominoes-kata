@@ -136,7 +136,6 @@ describe("tetrominoes.model.Player", function() {
                     Then(function() { expect(subject.canSlide()).toBeTruthy(); });
                 });
             });
-
         });
 
         describe("moving right", function() {
@@ -171,15 +170,26 @@ describe("tetrominoes.model.Player", function() {
         });
 
         describe("#elapsedTime", function() {
-
             context("for 500ms wait", function() {
                 When(function() { time = subject.elapsedTime(9500); });
-                Then(function() { expect(time).toBe(500) });
+                Then(function() { expect(time).toBe(500); });
             });
             context("for 700ms wait", function() {
                 When(function() { time = subject.elapsedTime(9300); });
-                Then(function() { expect(time).toBe(700) });
+                Then(function() { expect(time).toBe(700); });
             });
         });
+
+        describe("#placement", function() {
+            Given(function() { subject.placement._x = 7; });
+            When(function() { x = subject.placement.x(); });
+            Then(function() { expect(x).toBe(7); });
+        });
+
+        //describe("#commitPlacement"), function() {
+            //context("with a valid placement", function() {
+              //Given(function() { subject.placement.x =  }
+            //});
+        //});
     });
 });
