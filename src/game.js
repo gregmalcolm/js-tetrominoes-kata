@@ -6,7 +6,8 @@ app.Game = {
 
     keyCodes : {
         left: 37, up:38, right: 39, down: 40,
-        w: 87, a: 65, s: 83, d: 68
+        w: 87, a: 65, s: 83, d: 68,
+        h: 72, j: 74, k: 75, l: 76,
     },
 
     keys : {
@@ -64,18 +65,21 @@ app.Game = {
         switch(e.keyCode) {
             case that.keyCodes.left:
             case that.keyCodes.a:
+            case that.keyCodes.h:
                 that.keys.left = true;
                 that.keys.right = false;
                 break;
 
             case that.keyCodes.right:
             case that.keyCodes.d:
+            case that.keyCodes.l:
                 that.keys.right = true;
                 that.keys.left = false;
                 break;
 
             case that.keyCodes.up:
             case that.keyCodes.w:
+            case that.keyCodes.k:
                 that.keys.up = true;
                 break;
         };
@@ -86,16 +90,19 @@ app.Game = {
         switch(e.keyCode) {
             case that.keyCodes.left:
             case that.keyCodes.a:
+            case that.keyCodes.h:
                 that.keys.left = false;
                 break;
 
             case that.keyCodes.right:
             case that.keyCodes.d:
+            case that.keyCodes.l:
                 that.keys.right = false;
                 break;
 
             case that.keyCodes.up:
             case that.keyCodes.w:
+            case that.keyCodes.k:
                 that.keys.up = false;
                 break;
         };
