@@ -58,13 +58,17 @@ app.model.Player = {
     },
 
     wellBlocks: function() {
+        return this.projectBlocks(this.x, this.y);
+    },
+
+    projectBlocks: function(x, y) {
         var blocks = [];
         var local = this.localBlocks();
 
         for (var i = 0; i < local.length; ++i) {
             blocks[i] = {
-                            x: this.x + local[i].x,
-                            y: this.y + local[i].y
+                            x: x + local[i].x,
+                            y: y + local[i].y
                         };
         }
 
@@ -195,17 +199,7 @@ app.model.Placement = {
     },
 
     wellBlocks: function() {
-        var blocks = [];
-        var local = this.player.localBlocks();
-
-        for (var i = 0; i < local.length; ++i) {
-            blocks[i] = {
-                            x: this.x() + local[i].x,
-                            y: this.y() + local[i].y
-                        };
-        }
-
-        return blocks;
+        return this.player.projectBlocks(this.x(), this.y());
     },
 
     isValid : function() {

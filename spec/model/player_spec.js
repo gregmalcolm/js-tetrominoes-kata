@@ -218,6 +218,19 @@ describe("tetrominoes.model.Player", function() {
                 When(function() { rotationNum = subject.placement.rotationNum(); });
                 Then(function() { expect(rotationNum).toBe(0); });
             });
+
+            describe("#wellBlocks", function() {
+                var blocks;
+
+                When(function() { blocks = subject.wellBlocks(); });
+
+                Then(function() { expect(blocks[1].x).toBe(4); });
+                Then(function() { expect(blocks[1].y).toBe(1); });
+
+                Then(function() { expect(blocks[3].x).toBe(5); });
+                Then(function() { expect(blocks[3].y).toBe(2); });
+            });
+
             describe("#isValid", function() {
                 context("left as far as allowed", function() {
                     Given(function() { subject.placement._x = 0; });
