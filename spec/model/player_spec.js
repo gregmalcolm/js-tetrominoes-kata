@@ -24,6 +24,7 @@ describe("tetrominoes.model.Player", function() {
             When(function() { subject.spawn(shape, rotationNum); });
 
             Then(function() { expect(subject.shape).toBe(app.model.shapes()[0]); });
+
             Then(function() { expect(subject.rotationNum).toBe(0); });
         });
     });
@@ -61,6 +62,8 @@ describe("tetrominoes.model.Player", function() {
         });
 
         describe("#localBlocks", function() {
+            var blocks;
+
             Given(function() { rotationNum = 1; });
             Given(function() { subject.spawn(shape, rotationNum); });
 
@@ -74,6 +77,8 @@ describe("tetrominoes.model.Player", function() {
         });
 
         describe("#wellBlocks", function() {
+            var blocks;
+
             Given(function() { rotationNum = 1; });
             Given(function() { subject.spawn(shape, rotationNum); });
             Given(function() { subject.x = 4; });
@@ -114,6 +119,8 @@ describe("tetrominoes.model.Player", function() {
         });
 
         describe("moving left", function() {
+            var canSlide;
+
             context("when enough time has elapsed", function() {
                 When(function() { canSlide = subject.canSlide(); });
                 Then(function() { expect(canSlide).toBeTruthy(); });
@@ -170,6 +177,7 @@ describe("tetrominoes.model.Player", function() {
         });
 
         describe("#elapsedTime", function() {
+            var time;
             context("for 500ms wait", function() {
                 When(function() { time = subject.elapsedTime(9500); });
                 Then(function() { expect(time).toBe(500); });
@@ -181,15 +189,49 @@ describe("tetrominoes.model.Player", function() {
         });
 
         describe("#placement", function() {
-            Given(function() { subject.placement._x = 7; });
-            When(function() { x = subject.placement.x(); });
-            Then(function() { expect(x).toBe(7); });
+            var x, y, rotationNum;
+
+            context("with X placement", function() {
+                Given(function() { subject.placement._x = 7; });
+                When(function() { x = subject.placement.x(); });
+                Then(function() { expect(x).toBe(7); });
+            });
+            context("without X placement", function() {
+                When(function() { x = subject.placement.x(); });
+                Then(function() { expect(x).toBe(4); });
+            });
+            context("with Y placement", function() {
+                Given(function() { subject.placement._y = 10; });
+                When(function() { y = subject.placement.y(); });
+                Then(function() { expect(y).toBe(10); });
+            });
+            context("without Y placement", function() {
+                When(function() { y = subject.placement.y(); });
+                Then(function() { expect(y).toBe(1); });
+            });
+            context("with Rotation placement", function() {
+                Given(function() { subject.placement._rotationNum = 2; });
+                When(function() { rotationNum = subject.placement.rotationNum(); });
+                Then(function() { expect(rotationNum).toBe(2); });
+            });
+            context("without Rotation placement", function() {
+                When(function() { rotationNum = subject.placement.rotationNum(); });
+                Then(function() { expect(rotationNum).toBe(0); });
+            });
+            describe("#isValid", function() {
+                context("left as far as allowed", function() {
+                    Given(function() { subject.placement._x = 0; });
+                    When(function() { valid = subject.placement.isValid(); });
+                    Then(function() { expect(valid).toBeTruthy(); });
+                });
+
+                context("too far left", function() {
+                    Given(function() { subject.placement._x = -1; });
+                    When(function() { valid = subject.placement.isValid(); });
+                    Then(function() { expect(valid).toBeFalsy(); });
+                });
+            });
         });
 
-        //describe("#commitPlacement"), function() {
-            //context("with a valid placement", function() {
-              //Given(function() { subject.placement.x =  }
-            //});
-        //});
     });
 });

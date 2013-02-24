@@ -2,11 +2,13 @@ var app = tetrominoes;
 app.model = app.model || {};
 
 app.model.Shape = {
+    id: null,
     rotations: [],
 
     beget: function(args) {
         var that = Object.create(this);
         that.rotations = that.calcRotations(args.blocks);
+        that.id = args.id;
 
         return that;
     },
@@ -55,84 +57,84 @@ app.model.Shape = {
 app.model.shapes = function() {
     var that = [];
 
-    that.push(app.model.Shape.beget({blocks:
-        [["X",
-          "O",
-          "X",
-          "X"],
+    that.push(app.model.Shape.beget({id: 0,
+        blocks: [["X",
+                  "O",
+                  "X",
+                  "X"],
 
-         ["XOXX"]]})
+                 ["XOXX"]]})
     );
 
-    that.push(app.model.Shape.beget({blocks:
-        [["X",
-          "O",
-          "XX"],
+    that.push(app.model.Shape.beget({id: 1,
+        blocks: [["X",
+                  "O",
+                  "XX"],
 
-         ["XOX",
-          "X"],
+                 ["XOX",
+                  "X"],
 
-         ["XX",
-          " O",
-          " X"],
+                 ["XX",
+                  " O",
+                  " X"],
 
-         ["  X",
-          "XOX"]]})
+                 ["  X",
+                  "XOX"]]})
     );
 
-    that.push(app.model.Shape.beget({blocks:
-        [[" X",
-          " O",
-          "XX"],
+    that.push(app.model.Shape.beget({id: 2,
+        blocks: [[" X",
+                  " O",
+                  "XX"],
 
-         ["X",
-          "XOX"],
+                 ["X",
+                  "XOX"],
 
-         ["XX",
-          "O",
-          "X"],
+                 ["XX",
+                  "O",
+                  "X"],
 
-         ["XOX",
-          "  X"]]})
+                 ["XOX",
+                  "  X"]]})
     );
 
-    that.push(app.model.Shape.beget({blocks:
-        [["X",
-          "OX",
-          " X"],
+    that.push(app.model.Shape.beget({id: 3,
+        blocks: [["X",
+                  "OX",
+                  " X"],
 
-         [" OX",
-          "XX"]]})
+                 [" OX",
+                  "XX"]]})
     );
 
-    that.push(app.model.Shape.beget({blocks:
-        [[" X",
-          "OX",
-          "X"],
+    that.push(app.model.Shape.beget({id: 4,
+        blocks: [[" X",
+                  "OX",
+                  "X"],
 
-         ["XO ",
-          " XX"]]})
+                 ["XO ",
+                  " XX"]]})
     );
 
-    that.push(app.model.Shape.beget({blocks:
-        [[" X",
-          "XO",
-          " X"],
+    that.push(app.model.Shape.beget({id: 5,
+        blocks: [[" X",
+                  "XO",
+                  " X"],
 
-         [" X ",
-          "XOX"],
+                 [" X ",
+                  "XOX"],
 
-         ["X",
-          "OX",
-          "X"],
+                 ["X",
+                  "OX",
+                  "X"],
 
-         ["XOX",
-          " X"]]})
+                 ["XOX",
+                  " X"]]})
     );
 
-    that.push(app.model.Shape.beget({blocks:
-        [["XX",
-          "OX"]]})
+    that.push(app.model.Shape.beget({id: 6,
+        blocks: [["XX",
+                  "OX"]]})
     );
 
     app.model.shapes = function() {

@@ -46,10 +46,10 @@
           currentWindowOnload();
         }
         execJasmine();
-        $('.jasmine_reporter .summary')
+        $('.jasmine_reporter .results')
           .css('float', 'left')
-          .after('<br/><br/><div>' +
-                 '<canvas id="mainGame" width="504" height="612"><\/canvas>' +
+          .after('<div>' +
+                 '<canvas style="margin: 20px;" id="mainGame" width="504" height="612"><\/canvas>' +
                  '<\/div>');
 
         app.start();

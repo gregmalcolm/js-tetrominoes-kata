@@ -4,7 +4,7 @@ app.model = app.model || {};
 app.model.Player = {
     model : null,
     x : null,
-    y : 0,
+    y : null,
     rotationNum : null,
     shape: null,
     lastSlideTime: 0,
@@ -17,7 +17,7 @@ app.model.Player = {
         that.model = model;
         that.spawn();
 
-        that.placement = app.model.Placement.beget(that);
+        that.placement = app.model.Placement.beget(model, that);
 
         return that;
     },
@@ -28,6 +28,7 @@ app.model.Player = {
         this.rotationNum = (typeof rotationNum === "undefined")
                            ? this.randomRotationNum() : rotationNum;
 
+        this.y = 0;
         this.y = -(this.top());
     },
 
@@ -59,12 +60,11 @@ app.model.Player = {
     wellBlocks: function() {
         var blocks = [];
         var local = this.localBlocks();
-        var that = this;
 
         for (var i = 0; i < local.length; ++i) {
             blocks[i] = {
-                            x: that.x + local[i].x,
-                            y: that.y + local[i].y
+                            x: this.x + local[i].x,
+                            y: this.y + local[i].y
                         };
         }
 
@@ -169,23 +169,58 @@ app.model.Player = {
 };
 
 app.model.Placement = {
+    model: null,
     player: null,
     _x: null,
     _y: null,
     _rotationNum: null,
 
-    beget: function(player) {
+    beget: function(model, player) {
         var that = Object.create(this);
+        that.model = model;
         that.player = player;
         return that;
     },
 
     x: function() {
-        if (this._x) {
-            return this._x;
-        } else {
-            return this.player.x;
-        };
+        return this._x ? this._x : this.player.x;
+    },
+
+    y: function() {
+        return this._y ? this._y : this.player.y;
+    },
+
+    rotationNum: function() {
+        return this._rotationNum ? this._rotationNum : this.player.rotationNum;
+    },
+
+    wellBlocks: function() {
+        var blocks = [];
+        var local = this.player.localBlocks();
+
+        for (var i = 0; i < local.length; ++i) {
+            blocks[i] = {
+                            x: this.x() + local[i].x,
+                            y: this.y() + local[i].y
+                        };
+        }
+
+        return blocks;
+    },
+
+    isValid : function() {
+        var blocks;
+        blocks = this.wellBlocks();
+        if (this.outsideWell(blocks)) { return false; }
+        return true;
+    },
+
+    outsideWell : function(blocks) {
+        for (var i = 0; i < blocks.length; ++i) {
+            var block = blocks[i];
+            if (block.x < this.model.well.left()) { return true; }
+        }
+        return false;
     },
 };
 
