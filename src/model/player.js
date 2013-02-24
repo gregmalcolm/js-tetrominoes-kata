@@ -213,8 +213,18 @@ app.model.Placement = {
         for (var i = 0; i < blocks.length; ++i) {
             var block = blocks[i];
             if (block.x < this.model.well.left()) { return true; }
+            if (block.x > this.model.well.right()) { return true; }
         }
         return false;
+    },
+
+    commit : function() {
+        if (!this.isValid()) { return false; }
+
+        this.player.x = this.x();
+        this.player.y = this.y();
+        this.player.rotationNum = this.rotationNum();
+        return true;
     },
 };
 

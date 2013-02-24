@@ -222,7 +222,7 @@ describe("tetrominoes.model.Player", function() {
             describe("#wellBlocks", function() {
                 var blocks;
 
-                When(function() { blocks = subject.wellBlocks(); });
+                When(function() { blocks = subject.placement.wellBlocks(); });
 
                 Then(function() { expect(blocks[1].x).toBe(4); });
                 Then(function() { expect(blocks[1].y).toBe(1); });
@@ -232,16 +232,65 @@ describe("tetrominoes.model.Player", function() {
             });
 
             describe("#isValid", function() {
+                var valid;
+
                 context("left as far as allowed", function() {
                     Given(function() { subject.placement._x = 0; });
                     When(function() { valid = subject.placement.isValid(); });
                     Then(function() { expect(valid).toBeTruthy(); });
                 });
-
                 context("too far left", function() {
                     Given(function() { subject.placement._x = -1; });
                     When(function() { valid = subject.placement.isValid(); });
                     Then(function() { expect(valid).toBeFalsy(); });
+                });
+                context("right as far as allowed", function() {
+                    Given(function() { subject.placement._x = 8; });
+                    When(function() { valid = subject.placement.isValid(); });
+                    Then(function() { expect(valid).toBeTruthy(); });
+                });
+                context("too far right", function() {
+                    Given(function() { subject.placement._x = 9; });
+                    When(function() { valid = subject.placement.isValid(); });
+                    Then(function() { expect(valid).toBeFalsy(); });
+                });
+            });
+
+            describe("#commit", function() {
+                var result;
+
+                context("when placement is legal", function() {
+                    context("and everything is supposed to change", function() {
+                        Given(function() { subject.placement._x = 6; });
+                        Given(function() { subject.placement._y = 2; });
+                        Given(function() { subject.placement._rotationNum = 1; });
+
+                        When(function() { result = subject.placement.commit(); });
+                        Then(function() { expect(result).toBeTruthy(); });
+                        Then(function() { expect(subject.x).toBe(6); });
+                        Then(function() { expect(subject.y).toBe(2); });
+                        Then(function() { expect(subject.rotationNum).toBe(1); });
+                    });
+                    context("and only one thing changes", function() {
+                        Given(function() { subject.placement._x = 3; });
+
+                        When(function() { result = subject.placement.commit(); });
+                        Then(function() { expect(result).toBeTruthy(); });
+                        Then(function() { expect(subject.x).toBe(3); });
+                        Then(function() { expect(subject.y).toBe(1); });
+                        Then(function() { expect(subject.rotationNum).toBe(0); });
+                    });
+                });
+                context("when placement is illegal", function() {
+                    Given(function() { subject.placement._x = -5; });
+                    Given(function() { subject.placement._y = 3; });
+                    Given(function() { subject.placement._rotationNum = 1; });
+
+                    When(function() { result = subject.placement.commit(); });
+                    Then(function() { expect(result).toBeFalsy(); });
+                    Then(function() { expect(subject.x).toBe(4); });
+                    Then(function() { expect(subject.y).toBe(1); });
+                    Then(function() { expect(subject.rotationNum).toBe(0); });
                 });
             });
         });
