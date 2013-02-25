@@ -11,6 +11,7 @@ describe("tetrominoes.model.Player", function() {
     Given(function() { shape = app.model.shapes()[3]; });
     Given(function() { rotationNum = 0; });
     Given(function() { colorNum = 0; });
+    Given(function() { level = 2; });
     Given(function() { subject.gameTime = function() { return 10000; }; });
 
     describe("#spawn", function() {
@@ -19,11 +20,12 @@ describe("tetrominoes.model.Player", function() {
 
         context("with the long narrow shape in vertical rotation", function() {
             Given(function() { shape = app.model.shapes()[0]; });
-            When(function() { subject.spawn(shape, rotationNum, colorNum); });
+            When(function() { subject.spawn(shape, rotationNum, colorNum, level); });
 
             Then(function() { expect(subject.shape).toBe(app.model.shapes()[0]); });
             Then(function() { expect(subject.rotationNum).toBe(0); });
             Then(function() { expect(subject.colorNum).toBe(0); });
+            Then(function() { expect(subject.level).toBe(2); });
         });
     });
 
@@ -200,6 +202,19 @@ describe("tetrominoes.model.Player", function() {
             });
         });
 
+        describe("apply gravity", function() {
+            context("when enough time has elapsed", function() {
+                When(function() { subject.applyGravity(); });
+                Then(function() { expect(subject.y).toBe(2); });
+            });
+
+            //context("when too soon to move", function() {
+                //Given(function() { subject.lastVSlideTime = 9999; });
+                //When(function() { subject.slideDown(); });
+                //Then(function() { expect(subject.y).toBe(1); });
+            //});
+        });
+
         describe("#elapsedTime", function() {
             var time;
             context("for 500ms wait", function() {
@@ -336,7 +351,14 @@ describe("tetrominoes.model.Player", function() {
                     Then(function() { expect(subject.rotationNum).toBe(0); });
                 });
             });
-        });
 
+            describe("#speed", function() {
+                var speed;
+
+                Given(function() { subject.level = 1 });
+                When(function() { speed = subject.speed() });
+                Then(function() { expect(speed).toBe(500) });
+            });
+        });
     });
 });

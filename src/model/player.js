@@ -8,9 +8,12 @@ app.model.Player = {
     rotationNum : null,
     shape: null,
     colorNum: null,
+    level: null,
+
     lastHSlideTime: 0,
     lastVSlideTime: 0,
     lastRotateTime: 0,
+    lastFallTime: 0,
     placement: null,
 
     beget: function(model) {
@@ -24,7 +27,7 @@ app.model.Player = {
         return that;
     },
 
-    spawn: function(shape, rotationNum, colorNum) {
+    spawn: function(shape, rotationNum, colorNum, level) {
         this.x = (this.model.well.widthInBlocks / 2) - 1;
         this.shape = shape || this.randomShape();
         this.rotationNum = (typeof rotationNum === "undefined")
@@ -34,6 +37,7 @@ app.model.Player = {
         this.y = -(this.top());
         this.colorNum = (typeof colorNum === "undefined")
                         ? this.randomColorNum() : colorNum;
+        this.level = level ? level : 1
     },
 
     randomShape: function() {
@@ -148,22 +152,24 @@ app.model.Player = {
     },
 
     slideDown: function() {
-        this.handleVSlide(function(player) {
-            player.placement._y = player.y + 1;
-        });
+        if (!this.canVSlide()) { return false };
+        this.placement._y = this.y + 1;
+        this.lastVSlideTime = this.gameTime();
+        this.lastFallTime = this.lastVSlideTime;
+        return this.placement.commit();
+    },
+
+    applyGravity: function() {
+        if (!this.canFall()) { return false };
+        this.placement._y = this.y + 1;
+        this.lastFallTime = this.gameTime();
+        return this.placement.commit();
     },
 
     handleHSlide: function(action) {
         if (!this.canHSlide()) { return false };
         action(this);
         this.lastHSlideTime = this.gameTime();
-        return this.placement.commit();
-    },
-
-    handleVSlide: function(action) {
-        if (!this.canVSlide()) { return false };
-        action(this);
-        this.lastVSlideTime = this.gameTime();
         return this.placement.commit();
     },
 
@@ -194,6 +200,10 @@ app.model.Player = {
         return this.elapsedTime(this.lastRotateTime) > 160;
     },
 
+    canFall: function() {
+        return this.elapsedTime(this.lastFallTime) > this.speed();
+    },
+
     resetHSlideDelay: function() {
         return this.lastHSlideTime = 0;
     },
@@ -204,6 +214,15 @@ app.model.Player = {
 
     resetRotateDelay: function() {
         return this.lastRotateTime = 0;
+    },
+
+    speed: function() {
+        speed = 500;
+        for (var i = 1; i < this.level; i++) {
+            speed = speed * 0.9;
+        };
+
+        return Math.ceil(speed);
     },
 };
 
@@ -270,4 +289,3 @@ app.model.Placement = {
         return ok;
     },
 };
-

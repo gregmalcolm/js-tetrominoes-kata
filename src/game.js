@@ -40,8 +40,13 @@ app.Game = {
     },
 
     updateGame: function() {
+        this.physics();
         this.respond();
         this.view.render();
+    },
+
+    physics: function() {
+        this.model.player.applyGravity();
     },
 
     respond: function() {
