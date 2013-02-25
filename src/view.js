@@ -119,6 +119,8 @@ app.view.Well = {
 };
 
 app.view.Player = {
+    colors: ['red', 'orange', 'yellow', '#090', 'blue', 'indigo', 'violet'],
+
     beget: function(view) {
         var that = Object.create(this);
 
@@ -134,7 +136,7 @@ app.view.Player = {
 		var wellView = this.view.well;
         var blocks = player.wellBlocks();
 
-        this.view.context.fillStyle = 'yellow';
+        this.view.context.fillStyle = this.colors[this.model.player.colorNum];
 
         for (var i = 0; i < blocks.length; ++i) {
             var block = blocks[i];

@@ -7,6 +7,7 @@ app.model.Player = {
     y : null,
     rotationNum : null,
     shape: null,
+    colorNum: null,
     lastSlideTime: 0,
     lastRotateTime: 0,
     placement: null,
@@ -22,7 +23,7 @@ app.model.Player = {
         return that;
     },
 
-    spawn: function(shape, rotationNum) {
+    spawn: function(shape, rotationNum, colorNum) {
         this.x = (this.model.well.widthInBlocks / 2) - 1;
         this.shape = shape || this.randomShape();
         this.rotationNum = (typeof rotationNum === "undefined")
@@ -30,6 +31,8 @@ app.model.Player = {
 
         this.y = 0;
         this.y = -(this.top());
+        this.colorNum = (typeof colorNum === "undefined")
+                        ? this.randomColorNum() : colorNum;
     },
 
     randomShape: function() {
@@ -41,6 +44,10 @@ app.model.Player = {
         return app.util.randomInt(this.maxRotations());
     },
 
+    randomColorNum: function() {
+        return app.util.randomInt(app.view.Player.colors.length);
+    },
+
     localRotationNum: function(rotationNum) {
         return rotationNum % this.maxRotations();
     },
@@ -50,7 +57,7 @@ app.model.Player = {
     },
 
     localBlocks: function(rotationNum) {
-        if (typeof rotationNum != "number") { rotationNum = this.rotationNum };
+        if (typeof rotationNum !== "number") { rotationNum = this.rotationNum };
         if (!this.shape || !this.shape.rotations[rotationNum]) {
             return null;
         };
@@ -197,15 +204,15 @@ app.model.Placement = {
     },
 
     x: function() {
-        return this._x !=null ? this._x : this.player.x;
+        return this._x !== null ? this._x : this.player.x;
     },
 
     y: function() {
-        return this._y != null ? this._y : this.player.y;
+        return this._y !== null ? this._y : this.player.y;
     },
 
     rotationNum: function() {
-        return this._rotationNum != null ? this._rotationNum : this.player.rotationNum;
+        return this._rotationNum !== null ? this._rotationNum : this.player.rotationNum;
     },
 
     wellBlocks: function() {

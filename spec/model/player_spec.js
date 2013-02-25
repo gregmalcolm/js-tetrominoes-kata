@@ -1,11 +1,8 @@
 var app = tetrominoes;
 
 describe("tetrominoes.model.Player", function() {
-    var subject;
-    var view;
-    var gameModel;
-    var shape;
-    var rotationNum;
+    var subject, view, gameModel;
+    var shape, rotationNum, color;
 
     Given(function() { view = { canvas: { width: 504, height: 612} }});
     Given(function() { gameModel = app.model.Game.beget(); })
@@ -13,6 +10,7 @@ describe("tetrominoes.model.Player", function() {
     Given(function() { subject = app.model.Player.beget(gameModel); });
     Given(function() { shape = app.model.shapes()[3]; });
     Given(function() { rotationNum = 0; });
+    Given(function() { colorNum = 0; });
     Given(function() { subject.gameTime = function() { return 10000; }; });
 
     describe("#spawn", function() {
@@ -21,11 +19,11 @@ describe("tetrominoes.model.Player", function() {
 
         context("with the long narrow shape in vertical rotation", function() {
             Given(function() { shape = app.model.shapes()[0]; });
-            When(function() { subject.spawn(shape, rotationNum); });
+            When(function() { subject.spawn(shape, rotationNum, colorNum); });
 
             Then(function() { expect(subject.shape).toBe(app.model.shapes()[0]); });
-
             Then(function() { expect(subject.rotationNum).toBe(0); });
+            Then(function() { expect(subject.colorNum).toBe(0); });
         });
     });
 
