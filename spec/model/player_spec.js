@@ -30,7 +30,7 @@ describe("tetrominoes.model.Player", function() {
     });
 
     context("with a predetermined shape", function() {
-        Given(function() { subject.spawn(shape, rotationNum); });
+        Given(function() { subject.spawn(shape, rotationNum, 3, 1); });
         describe("#localRotationNum", function() {
             context("when the shape has 2 rotation rotations", function() {
                 Given(function() { subject.shape = app.model.shapes()[0]; });
@@ -208,11 +208,11 @@ describe("tetrominoes.model.Player", function() {
                 Then(function() { expect(subject.y).toBe(2); });
             });
 
-            //context("when too soon to move", function() {
-                //Given(function() { subject.lastVSlideTime = 9999; });
-                //When(function() { subject.slideDown(); });
-                //Then(function() { expect(subject.y).toBe(1); });
-            //});
+            context("when too soon to move", function() {
+                Given(function() { subject.lastFallTime = 9999; });
+                When(function() { subject.applyGravity(); });
+                Then(function() { expect(subject.y).toBe(1); });
+            });
         });
 
         describe("#elapsedTime", function() {
@@ -358,6 +358,12 @@ describe("tetrominoes.model.Player", function() {
                 Given(function() { subject.level = 1 });
                 When(function() { speed = subject.speed() });
                 Then(function() { expect(speed).toBe(500) });
+            });
+
+            describe("#placeShape", function() {
+                Given(function() { subject.y = 12; });
+                When(function() { subject.placeShape(); });
+                Then(function() { expect(subject.model.blocks(4,13)).toBe(3); });
             });
         });
     });

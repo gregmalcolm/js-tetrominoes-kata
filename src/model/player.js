@@ -37,7 +37,7 @@ app.model.Player = {
         this.y = -(this.top());
         this.colorNum = (typeof colorNum === "undefined")
                         ? this.randomColorNum() : colorNum;
-        this.level = level ? level : 1
+        this.level = level ? level : 1;
     },
 
     randomShape: function() {
@@ -217,12 +217,20 @@ app.model.Player = {
     },
 
     speed: function() {
-        speed = 500;
+        var speed = 500;
         for (var i = 1; i < this.level; i++) {
             speed = speed * 0.9;
         };
 
         return Math.ceil(speed);
+    },
+
+    placeShape: function() {
+        var blocks = this.wellBlocks();
+        for (var i = 0; i < blocks.length; i++) {
+            var block = blocks[i];
+            this.model.blocks(block.x, block.y, this.colorNum);
+        };
     },
 };
 

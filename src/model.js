@@ -13,6 +13,7 @@ app.model.Game = {
     well : null,
     shapes : [],
     player : [],
+    blocks : [],
 
     init: function(view) {
         this.initMetrics(view);
@@ -26,6 +27,14 @@ app.model.Game = {
         this.canvasHeight = view.canvas.height;
         this.blockWidth = this.canvasWidth / this.widthInBlocks;
         this.blockHeight = this.canvasHeight / this.heightInBlocks;
+    },
+
+    blocks: function(x, y, colorNum) {
+        if (typeof colorNum === 'undefined') {
+            return this.blocks[x,y];
+        } else {
+            this.blocks[x,y] = colorNum;
+        }
     },
 };
 
