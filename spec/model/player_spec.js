@@ -174,11 +174,11 @@ describe("tetrominoes.model.Player", function() {
                 Then(function() { expect(subject.y).toBe(2); });
             });
 
-            //context("when too soon to move", function() {
-                //Given(function() { subject.lastHSlideTime = 9999; });
-                //When(function() { subject.slideRight(); });
-                //Then(function() { expect(subject.x).toBe(4); });
-            //});
+            context("when too soon to move", function() {
+                Given(function() { subject.lastVSlideTime = 9999; });
+                When(function() { subject.slideDown(); });
+                Then(function() { expect(subject.y).toBe(1); });
+            });
         });
 
 
@@ -311,12 +311,20 @@ describe("tetrominoes.model.Player", function() {
                     });
                 });
 
-                context("when sliding into an illegal position", function() {
+                context("when sliding into an illegal position horizontally", function() {
                     Given(function() { subject.placement._x = 10; });
 
                     When(function() { result = subject.placement.commit(); });
                     Then(function() { expect(result).toBeFalsy(); });
                     Then(function() { expect(subject.x).toBe(4); });
+                });
+
+                context("when sliding into an illegal position vertically", function() {
+                    Given(function() { subject.placement._y = 13; });
+
+                    When(function() { result = subject.placement.commit(); });
+                    Then(function() { expect(result).toBeFalsy(); });
+                    Then(function() { expect(subject.y).toBe(1); });
                 });
 
                 context("when rotating into an illegal position", function() {

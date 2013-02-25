@@ -31,7 +31,7 @@ app.model.Game = {
 
 app.model.Well = {
     widthInBlocks: 10,
-    heightInBlocks: 15,
+    heightInBlocks: 14,
 
     left: function()   { return 0; },
     top: function()    { return 0; },

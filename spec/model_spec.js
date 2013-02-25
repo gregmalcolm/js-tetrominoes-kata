@@ -57,7 +57,7 @@ describe("tetrominoes.model.Well", function() {
 
     describe("#bottom", function() {
         When( function() { bottom = subject.bottom(); });
-        Then( function() { expect(bottom).toBe(14); });
+        Then( function() { expect(bottom).toBe(13); });
     });
 
 });

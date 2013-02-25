@@ -187,7 +187,7 @@ app.model.Player = {
     },
 
     canVSlide: function() {
-        return this.elapsedTime(this.lastVSlideTime) > 80;
+        return this.elapsedTime(this.lastVSlideTime) > 40;
     },
 
     canRotate: function() {
@@ -253,6 +253,7 @@ app.model.Placement = {
             var block = blocks[i];
             if (block.x < this.model.well.left()) { return true; }
             if (block.x > this.model.well.right()) { return true; }
+            if (block.y > this.model.well.bottom()) { return true; }
         }
         return false;
     },
