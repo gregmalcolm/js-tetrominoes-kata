@@ -50,7 +50,13 @@ app.Game = {
         } else if (this.keys.right) {
             this.model.player.slideRight();
         } else {
-            this.model.player.resetSlideDelay();
+            this.model.player.resetHSlideDelay();
+        };
+
+        if (this.keys.down) {
+            this.model.player.slideDown();
+        } else {
+            this.model.player.resetVSlideDelay();
         };
 
         if (this.keys.up) {
@@ -82,6 +88,12 @@ app.Game = {
             case that.keyCodes.k:
                 that.keys.up = true;
                 break;
+
+            case that.keyCodes.down:
+            case that.keyCodes.s:
+            case that.keyCodes.j:
+                that.keys.down = true;
+                break;
         };
     },
 
@@ -104,6 +116,12 @@ app.Game = {
             case that.keyCodes.w:
             case that.keyCodes.k:
                 that.keys.up = false;
+                break;
+
+            case that.keyCodes.down:
+            case that.keyCodes.s:
+            case that.keyCodes.j:
+                that.keys.down = false;
                 break;
         };
     },

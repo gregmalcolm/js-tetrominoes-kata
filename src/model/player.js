@@ -8,7 +8,8 @@ app.model.Player = {
     rotationNum : null,
     shape: null,
     colorNum: null,
-    lastSlideTime: 0,
+    lastHSlideTime: 0,
+    lastVSlideTime: 0,
     lastRotateTime: 0,
     placement: null,
 
@@ -135,21 +136,34 @@ app.model.Player = {
     },
 
     slideLeft: function() {
-        this.handleSlide(function(player) {
+        this.handleHSlide(function(player) {
             player.placement._x = player.x - 1;
         });
     },
 
     slideRight: function() {
-        this.handleSlide(function(player) {
+        this.handleHSlide(function(player) {
             player.placement._x = player.x + 1;
         });
     },
 
-    handleSlide: function(action) {
-        if (!this.canSlide()) { return false };
+    slideDown: function() {
+        this.handleVSlide(function(player) {
+            player.placement._y = player.y + 1;
+        });
+    },
+
+    handleHSlide: function(action) {
+        if (!this.canHSlide()) { return false };
         action(this);
-        this.lastSlideTime = this.gameTime();
+        this.lastHSlideTime = this.gameTime();
+        return this.placement.commit();
+    },
+
+    handleVSlide: function(action) {
+        if (!this.canVSlide()) { return false };
+        action(this);
+        this.lastVSlideTime = this.gameTime();
         return this.placement.commit();
     },
 
@@ -168,16 +182,24 @@ app.model.Player = {
         return this.gameTime() - oldTime;
     },
 
-    canSlide: function() {
-        return this.elapsedTime(this.lastSlideTime) > 80;
+    canHSlide: function() {
+        return this.elapsedTime(this.lastHSlideTime) > 80;
+    },
+
+    canVSlide: function() {
+        return this.elapsedTime(this.lastVSlideTime) > 80;
     },
 
     canRotate: function() {
         return this.elapsedTime(this.lastRotateTime) > 160;
     },
 
-    resetSlideDelay: function() {
-        return this.lastSlideTime = 0;
+    resetHSlideDelay: function() {
+        return this.lastHSlideTime = 0;
+    },
+
+    resetVSlideDelay: function() {
+        return this.lastVSlideTime = 0;
     },
 
     resetRotateDelay: function() {

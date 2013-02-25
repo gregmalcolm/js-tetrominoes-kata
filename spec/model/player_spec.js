@@ -128,45 +128,59 @@ describe("tetrominoes.model.Player", function() {
             });
         });
 
-        describe("moving left", function() {
-            var canSlide;
+        describe("sliding left", function() {
+            var canHSlide;
 
             context("when enough time has elapsed", function() {
-                When(function() { canSlide = subject.canSlide(); });
-                Then(function() { expect(canSlide).toBeTruthy(); });
+                When(function() { canHSlide = subject.canHSlide(); });
+                Then(function() { expect(canHSlide).toBeTruthy(); });
 
                 context("when the player tries to move left", function() {
                     When(function() { subject.slideLeft(); });
                     Then(function() { expect(subject.x).toBe(3); });
-                    Then(function() { expect(subject.canSlide()).toBeFalsy(); });
+                    Then(function() { expect(subject.canHSlide()).toBeFalsy(); });
                 });
             });
 
             context("when too soon to move", function() {
-                Given(function() { subject.lastSlideTime = 9999; });
+                Given(function() { subject.lastHSlideTime = 9999; });
                 When(function() { subject.slideLeft(); });
-                Then(function() { expect(subject.canSlide()).toBeFalsy(); });
+                Then(function() { expect(subject.canHSlide()).toBeFalsy(); });
                 Then(function() { expect(subject.x).toBe(4); });
 
                 context("when we want to move sooner", function() {
-                    When(function() { subject.resetSlideDelay(); });
-                    Then(function() { expect(subject.canSlide()).toBeTruthy(); });
+                    When(function() { subject.resetHSlideDelay(); });
+                    Then(function() { expect(subject.canHSlide()).toBeTruthy(); });
                 });
             });
         });
 
-        describe("moving right", function() {
+        describe("sliding right", function() {
             context("when enough time has elapsed", function() {
                 When(function() { subject.slideRight(); });
                 Then(function() { expect(subject.x).toBe(5); });
             });
 
             context("when too soon to move", function() {
-                Given(function() { subject.lastSlideTime = 9999; });
+                Given(function() { subject.lastHSlideTime = 9999; });
                 When(function() { subject.slideRight(); });
                 Then(function() { expect(subject.x).toBe(4); });
             });
         });
+
+        describe("sliding down", function() {
+            context("when enough time has elapsed", function() {
+                When(function() { subject.slideDown(); });
+                Then(function() { expect(subject.y).toBe(2); });
+            });
+
+            //context("when too soon to move", function() {
+                //Given(function() { subject.lastHSlideTime = 9999; });
+                //When(function() { subject.slideRight(); });
+                //Then(function() { expect(subject.x).toBe(4); });
+            //});
+        });
+
 
         describe("rotate", function() {
             context("when enough time has elapsed", function() {
