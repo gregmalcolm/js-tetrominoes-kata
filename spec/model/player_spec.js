@@ -67,13 +67,25 @@ describe("tetrominoes.model.Player", function() {
             Given(function() { rotationNum = 1; });
             Given(function() { subject.spawn(shape, rotationNum); });
 
-            When(function() { blocks = subject.localBlocks(); });
+            context("using the default rotation", function() {
+                When(function() { blocks = subject.localBlocks(); });
 
-            Then(function() { expect(blocks[1].x).toBe(1); });
-            Then(function() { expect(blocks[1].y).toBe(0); });
+                Then(function() { expect(blocks[1].x).toBe(1); });
+                Then(function() { expect(blocks[1].y).toBe(0); });
 
-            Then(function() { expect(blocks[2].x).toBe(-1); });
-            Then(function() { expect(blocks[2].y).toBe(1); });
+                Then(function() { expect(blocks[2].x).toBe(-1); });
+                Then(function() { expect(blocks[2].y).toBe(1); });
+            });
+
+            context("using the a specific rotation", function() {
+                When(function() { blocks = subject.localBlocks(0); });
+
+                Then(function() { expect(blocks[1].x).toBe(0); });
+                Then(function() { expect(blocks[1].y).toBe(0); });
+
+                Then(function() { expect(blocks[2].x).toBe(1); });
+                Then(function() { expect(blocks[2].y).toBe(0); });
+            });
         });
 
         describe("#wellBlocks", function() {
@@ -267,9 +279,14 @@ describe("tetrominoes.model.Player", function() {
 
                         When(function() { result = subject.placement.commit(); });
                         Then(function() { expect(result).toBeTruthy(); });
+
                         Then(function() { expect(subject.x).toBe(6); });
                         Then(function() { expect(subject.y).toBe(2); });
                         Then(function() { expect(subject.rotationNum).toBe(1); });
+
+                        Then(function() { expect(subject.placement._x).toBeNull(); });
+                        Then(function() { expect(subject.placement._y).toBeNull(); });
+                        Then(function() { expect(subject.placement._rotationNum).toBeNull(); });
                     });
                     context("and only one thing changes", function() {
                         Given(function() { subject.placement._x = 3; });
@@ -281,15 +298,21 @@ describe("tetrominoes.model.Player", function() {
                         Then(function() { expect(subject.rotationNum).toBe(0); });
                     });
                 });
-                context("when placement is illegal", function() {
-                    Given(function() { subject.placement._x = -5; });
-                    Given(function() { subject.placement._y = 3; });
-                    Given(function() { subject.placement._rotationNum = 1; });
+
+                context("when sliding into an illegal position", function() {
+                    Given(function() { subject.placement._x = 10; });
 
                     When(function() { result = subject.placement.commit(); });
                     Then(function() { expect(result).toBeFalsy(); });
                     Then(function() { expect(subject.x).toBe(4); });
-                    Then(function() { expect(subject.y).toBe(1); });
+                });
+
+                context("when rotating into an illegal position", function() {
+                    Given(function() { subject.placement._x = 0; });
+                    Given(function() { subject.placement._rotationNum = 1; });
+
+                    When(function() { result = subject.placement.commit(); });
+                    Then(function() { expect(result).toBeFalsy(); });
                     Then(function() { expect(subject.rotationNum).toBe(0); });
                 });
             });

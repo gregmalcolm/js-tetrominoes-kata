@@ -49,21 +49,22 @@ app.model.Player = {
         return this.shape ? this.shape.rotations.length : 1;
     },
 
-    localBlocks: function() {
-        if (!this.shape || !this.shape.rotations[this.rotationNum]) {
+    localBlocks: function(rotationNum) {
+        if (typeof rotationNum != "number") { rotationNum = this.rotationNum };
+        if (!this.shape || !this.shape.rotations[rotationNum]) {
             return null;
         };
 
-        return this.shape.rotations[this.rotationNum].blocks;
+        return this.shape.rotations[rotationNum].blocks;
     },
 
     wellBlocks: function() {
-        return this.projectBlocks(this.x, this.y);
+        return this.projectBlocks(this.x, this.y, this.rotationNum);
     },
 
-    projectBlocks: function(x, y) {
+    projectBlocks: function(x, y, rotationNum) {
         var blocks = [];
-        var local = this.localBlocks();
+        var local = this.localBlocks(rotationNum);
 
         for (var i = 0; i < local.length; ++i) {
             blocks[i] = {
@@ -121,30 +122,35 @@ app.model.Player = {
 
     rotate: function() {
         this.handleRotation(function(player) {
-            player.rotationNum = (player.rotationNum + 1) % player.maxRotations();
+            player.placement._rotationNum = (player.rotationNum + 1) %
+                                            player.maxRotations();
         });
     },
 
     slideLeft: function() {
-        this.handleSlide(function(player) { --player.x; });
+        this.handleSlide(function(player) {
+            player.placement._x = player.x - 1;
+        });
     },
 
     slideRight: function() {
-        this.handleSlide(function(player) { ++player.x; });
+        this.handleSlide(function(player) {
+            player.placement._x = player.x + 1;
+        });
     },
 
     handleSlide: function(action) {
         if (!this.canSlide()) { return false };
         action(this);
         this.lastSlideTime = this.gameTime();
-        return true;
+        return this.placement.commit();
     },
 
     handleRotation: function(action) {
         if (!this.canRotate()) { return false };
         action(this);
         this.lastRotateTime = this.gameTime();
-        return true;
+        return this.placement.commit();
     },
 
     gameTime: function() {
@@ -186,20 +192,24 @@ app.model.Placement = {
         return that;
     },
 
+    reset: function() {
+        this._x = this._y = this._rotationNum = null;
+    },
+
     x: function() {
-        return this._x ? this._x : this.player.x;
+        return this._x !=null ? this._x : this.player.x;
     },
 
     y: function() {
-        return this._y ? this._y : this.player.y;
+        return this._y != null ? this._y : this.player.y;
     },
 
     rotationNum: function() {
-        return this._rotationNum ? this._rotationNum : this.player.rotationNum;
+        return this._rotationNum != null ? this._rotationNum : this.player.rotationNum;
     },
 
     wellBlocks: function() {
-        return this.player.projectBlocks(this.x(), this.y());
+        return this.player.projectBlocks(this.x(), this.y(), this.rotationNum());
     },
 
     isValid : function() {
@@ -219,12 +229,15 @@ app.model.Placement = {
     },
 
     commit : function() {
-        if (!this.isValid()) { return false; }
-
-        this.player.x = this.x();
-        this.player.y = this.y();
-        this.player.rotationNum = this.rotationNum();
-        return true;
+        var ok = false;
+        if (this.isValid()) {
+            this.player.x = this.x();
+            this.player.y = this.y();
+            this.player.rotationNum = this.rotationNum();
+            ok = true;
+        }
+        this.reset();
+        return ok;
     },
 };
 
