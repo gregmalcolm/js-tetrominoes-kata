@@ -63,5 +63,13 @@ app.model.Placement = {
         this.reset();
         return ok;
     },
+
+    commitOrLand : function() {
+        var commit = this.commit();
+        if (!commit) {
+            this.player.landShape();
+        }
+        return commit;
+    },
 };
 

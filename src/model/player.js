@@ -156,14 +156,14 @@ app.model.Player = {
         this.placement._y = this.y + 1;
         this.lastVSlideTime = this.gameTime();
         this.lastFallTime = this.lastVSlideTime;
-        return this.placement.commit();
+        return this.placement.commitOrLand();
     },
 
     applyGravity: function() {
         if (!this.canFall()) { return false };
         this.placement._y = this.y + 1;
         this.lastFallTime = this.gameTime();
-        return this.placement.commit();
+        return this.placement.commitOrLand();
     },
 
     handleHSlide: function(action) {
@@ -231,5 +231,8 @@ app.model.Player = {
             var block = blocks[i];
             this.model.block(block.x, block.y, this.colorNum);
         };
+
+        this.spawn();
+        return this;
     },
 };

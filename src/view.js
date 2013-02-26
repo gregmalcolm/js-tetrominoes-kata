@@ -15,6 +15,12 @@ app.view.Game = {
         return that;
     },
 
+    render: function() {
+        this.renderBackground();
+        this.renderBlocks();
+        this.player.render();
+    },
+
     clear: function() {
         this.context.fillStyle = 'black';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -25,10 +31,11 @@ app.view.Game = {
         this.well.render();
     },
 
-    render: function() {
-        this.renderBackground();
-        this.player.render();
+    renderBlocks: function() {
+        //for (var block in this.model.blocks) {
+        //}
     },
+
 };
 
 app.view.Well = {

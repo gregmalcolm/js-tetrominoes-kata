@@ -112,6 +112,24 @@ describe("tetrominoes.model.Placement", function() {
             });
         });
 
+        context("#commitOrLand", function() {
+            var result;
+            context("when the next move is legal", function() {
+                Given(function() { player.y = 6; });
+                Given(function() { subject._y = 7; });
+                When(function() { result = subject.commitOrLand(); });
+                Then(function() { expect(result).toBeTruthy(); });
+                Then(function() { expect(player.y).toBe(7); });
+            });
+            context("when the next move is legal", function() {
+                Given(function() { player.y = 12; });
+                Given(function() { subject._y = 13; });
+                When(function() { result = subject.commitOrLand(); });
+                Then(function() { expect(result).toBeFalsy(); });
+                Then(function() { expect(player.y).toBeLessThan(4); });
+            });
+        });
+
         context("when sliding into an illegal position horizontally", function() {
             Given(function() { subject._x = 10; });
 
