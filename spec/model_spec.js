@@ -33,4 +33,30 @@ describe("tetrominoes.model", function() {
         });
     });
 
+    describe("#block setter", function() {
+        context("as occupied space", function() {
+            When(function() { subject.block(3, 5, 4); });
+            Then(function() { expect(subject.blocks[3,5]).toBe(4); });
+        });
+
+        context("as unoccupied space", function() {
+            When(function() { subject.block(3, 5, null); });
+            Then(function() { expect(subject.blocks[3,5]).toBeUndefined(); });
+        });
+    });
+
+    describe("#block getter", function() {
+        var colorNum;
+        context("when occupied", function() {
+            Given(function() { subject.blocks[2, 6] = 3; });
+            When(function() { colorNum = subject.block(2,6); });
+            Then(function() { expect(colorNum).toBe(3); });
+        });
+
+        context("when unoccupied", function() {
+            When(function() { colorNum = subject.block(4,3); });
+            Then(function() { expect(colorNum).toBeUndefined(); });
+        });
+    });
+
 });

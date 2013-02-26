@@ -16,25 +16,46 @@ app.model.Game = {
     blocks : [],
 
     init: function(view) {
-        this.initMetrics(view);
+        this._initMetrics(view);
         this.well = app.model.Well.beget();
         this.shapes = app.model.shapes();
         this.player = app.model.Player.beget(this);
     },
 
-    initMetrics: function(view) {
+    block: function(x, y, colorNum) {
+        if (typeof colorNum === 'undefined') {
+            return this._getBlock(x, y);
+        } else {
+            this._setOrUnassignBlock(x, y, colorNum);
+            return this;
+        }
+    },
+
+    _initMetrics: function(view) {
         this.canvasWidth = view.canvas.width;
         this.canvasHeight = view.canvas.height;
         this.blockWidth = this.canvasWidth / this.widthInBlocks;
         this.blockHeight = this.canvasHeight / this.heightInBlocks;
     },
 
-    blocks: function(x, y, colorNum) {
-        if (typeof colorNum === 'undefined') {
-            return this.blocks[x,y];
+    _setOrUnassignBlock: function(x, y, colorNum) {
+        if (colorNum === null) {
+            this._unassignBlock(x, y);
         } else {
-            this.blocks[x,y] = colorNum;
+            this._setBlock(x, y, colorNum);
         }
+    },
+
+    _unassignBlock: function(x, y, colorNum) {
+        this.blocks[x,y] = undefined;
+    },
+
+    _setBlock: function(x, y, colorNum) {
+        this.blocks[x,y] = colorNum;
+    },
+
+    _getBlock: function(x,y) {
+        return this.blocks[x,y];
     },
 };
 

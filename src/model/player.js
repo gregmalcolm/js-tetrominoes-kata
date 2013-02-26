@@ -229,7 +229,7 @@ app.model.Player = {
         var blocks = this.wellBlocks();
         for (var i = 0; i < blocks.length; i++) {
             var block = blocks[i];
-            this.model.blocks(block.x, block.y, this.colorNum);
+            this.model.block(block.x, block.y, this.colorNum);
         };
     },
 };

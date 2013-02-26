@@ -238,7 +238,7 @@ describe("tetrominoes.model.Player", function() {
         describe("#landShape", function() {
             Given(function() { subject.y = 12; });
             When(function() { subject.landShape(); });
-            Then(function() { expect(subject.model.blocks(4,13)).toBe(3); });
+            Then(function() { expect(subject.model.block(4,13)).toBe(3); });
         });
 
     });
