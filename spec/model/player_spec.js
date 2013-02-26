@@ -2,7 +2,7 @@ var app = tetrominoes;
 
 describe("tetrominoes.model.Player", function() {
     var subject, view, gameModel;
-    var shape, rotationNum, color;
+    var shape, rotationNum, colorNum;
 
     Given(function() { view = { canvas: { width: 504, height: 612} }});
     Given(function() { gameModel = app.model.Game.beget(); })
@@ -227,144 +227,19 @@ describe("tetrominoes.model.Player", function() {
             });
         });
 
-        describe("#placement", function() {
-            var x, y, rotationNum;
+        describe("#speed", function() {
+            var speed;
 
-            context("with X placement", function() {
-                Given(function() { subject.placement._x = 7; });
-                When(function() { x = subject.placement.x(); });
-                Then(function() { expect(x).toBe(7); });
-            });
-            context("without X placement", function() {
-                When(function() { x = subject.placement.x(); });
-                Then(function() { expect(x).toBe(4); });
-            });
-            context("with Y placement", function() {
-                Given(function() { subject.placement._y = 10; });
-                When(function() { y = subject.placement.y(); });
-                Then(function() { expect(y).toBe(10); });
-            });
-            context("without Y placement", function() {
-                When(function() { y = subject.placement.y(); });
-                Then(function() { expect(y).toBe(1); });
-            });
-            context("with Rotation placement", function() {
-                Given(function() { subject.placement._rotationNum = 2; });
-                When(function() { rotationNum = subject.placement.rotationNum(); });
-                Then(function() { expect(rotationNum).toBe(2); });
-            });
-            context("without Rotation placement", function() {
-                When(function() { rotationNum = subject.placement.rotationNum(); });
-                Then(function() { expect(rotationNum).toBe(0); });
-            });
-
-            describe("#wellBlocks", function() {
-                var blocks;
-
-                When(function() { blocks = subject.placement.wellBlocks(); });
-
-                Then(function() { expect(blocks[1].x).toBe(4); });
-                Then(function() { expect(blocks[1].y).toBe(1); });
-
-                Then(function() { expect(blocks[3].x).toBe(5); });
-                Then(function() { expect(blocks[3].y).toBe(2); });
-            });
-
-            describe("#isValid", function() {
-                var valid;
-
-                context("left as far as allowed", function() {
-                    Given(function() { subject.placement._x = 0; });
-                    When(function() { valid = subject.placement.isValid(); });
-                    Then(function() { expect(valid).toBeTruthy(); });
-                });
-                context("too far left", function() {
-                    Given(function() { subject.placement._x = -1; });
-                    When(function() { valid = subject.placement.isValid(); });
-                    Then(function() { expect(valid).toBeFalsy(); });
-                });
-                context("right as far as allowed", function() {
-                    Given(function() { subject.placement._x = 8; });
-                    When(function() { valid = subject.placement.isValid(); });
-                    Then(function() { expect(valid).toBeTruthy(); });
-                });
-                context("too far right", function() {
-                    Given(function() { subject.placement._x = 9; });
-                    When(function() { valid = subject.placement.isValid(); });
-                    Then(function() { expect(valid).toBeFalsy(); });
-                });
-            });
-
-            describe("#commit", function() {
-                var result;
-
-                context("when placement is legal", function() {
-                    context("and everything is supposed to change", function() {
-                        Given(function() { subject.placement._x = 6; });
-                        Given(function() { subject.placement._y = 2; });
-                        Given(function() { subject.placement._rotationNum = 1; });
-
-                        When(function() { result = subject.placement.commit(); });
-                        Then(function() { expect(result).toBeTruthy(); });
-
-                        Then(function() { expect(subject.x).toBe(6); });
-                        Then(function() { expect(subject.y).toBe(2); });
-                        Then(function() { expect(subject.rotationNum).toBe(1); });
-
-                        Then(function() { expect(subject.placement._x).toBeNull(); });
-                        Then(function() { expect(subject.placement._y).toBeNull(); });
-                        Then(function() { expect(subject.placement._rotationNum).toBeNull(); });
-                    });
-                    context("and only one thing changes", function() {
-                        Given(function() { subject.placement._x = 3; });
-
-                        When(function() { result = subject.placement.commit(); });
-                        Then(function() { expect(result).toBeTruthy(); });
-                        Then(function() { expect(subject.x).toBe(3); });
-                        Then(function() { expect(subject.y).toBe(1); });
-                        Then(function() { expect(subject.rotationNum).toBe(0); });
-                    });
-                });
-
-                context("when sliding into an illegal position horizontally", function() {
-                    Given(function() { subject.placement._x = 10; });
-
-                    When(function() { result = subject.placement.commit(); });
-                    Then(function() { expect(result).toBeFalsy(); });
-                    Then(function() { expect(subject.x).toBe(4); });
-                });
-
-                context("when sliding into an illegal position vertically", function() {
-                    Given(function() { subject.placement._y = 13; });
-
-                    When(function() { result = subject.placement.commit(); });
-                    Then(function() { expect(result).toBeFalsy(); });
-                    Then(function() { expect(subject.y).toBe(1); });
-                });
-
-                context("when rotating into an illegal position", function() {
-                    Given(function() { subject.placement._x = 0; });
-                    Given(function() { subject.placement._rotationNum = 1; });
-
-                    When(function() { result = subject.placement.commit(); });
-                    Then(function() { expect(result).toBeFalsy(); });
-                    Then(function() { expect(subject.rotationNum).toBe(0); });
-                });
-            });
-
-            describe("#speed", function() {
-                var speed;
-
-                Given(function() { subject.level = 1 });
-                When(function() { speed = subject.speed() });
-                Then(function() { expect(speed).toBe(500) });
-            });
-
-            describe("#placeShape", function() {
-                Given(function() { subject.y = 12; });
-                When(function() { subject.placeShape(); });
-                Then(function() { expect(subject.model.blocks(4,13)).toBe(3); });
-            });
+            Given(function() { subject.level = 1 });
+            When(function() { speed = subject.speed() });
+            Then(function() { expect(speed).toBe(500) });
         });
+
+        describe("#landShape", function() {
+            Given(function() { subject.y = 12; });
+            When(function() { subject.landShape(); });
+            Then(function() { expect(subject.model.blocks(4,13)).toBe(3); });
+        });
+
     });
 });
