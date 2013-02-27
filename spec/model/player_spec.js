@@ -243,6 +243,8 @@ describe("tetrominoes.model.Player", function() {
             Then(function() { expect(subject.model.block(5,12)).toBe(3); });
             Then(function() { expect(subject.model.block(5,13)).toBe(3); });
 
+            Then(function() { expect(subject.model.block(3,11)).not.toBeDefined(); });
+
             Then(function() { expect(subject.y).toBeLessThan(5); });
         });
 

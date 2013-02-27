@@ -13,13 +13,21 @@ app.model.Game = {
     well : null,
     shapes : [],
     player : [],
-    blocks : [],
+    blocks : null,
 
     init: function(view) {
         this._initMetrics(view);
         this.well = app.model.Well.beget();
         this.shapes = app.model.shapes();
+        this.resetBlocks()
         this.player = app.model.Player.beget(this);
+    },
+
+    resetBlocks: function() {
+        this.blocks = new Array(this.well.widthInBlocks);
+        for (var x = 0; x < this.blocks.length; x++) {
+            this.blocks[x] = new Array(this.well.heightInBlocks);
+        }
     },
 
     block: function(x, y, colorNum) {
@@ -47,15 +55,15 @@ app.model.Game = {
     },
 
     _unassignBlock: function(x, y, colorNum) {
-        this.blocks[x,y] = undefined;
+        this.blocks[x][y] = undefined;
     },
 
     _setBlock: function(x, y, colorNum) {
-        this.blocks[x,y] = colorNum;
+        this.blocks[x][y] = colorNum;
     },
 
     _getBlock: function(x,y) {
-        return this.blocks[x,y];
+        return this.blocks[x][y];
     },
 };
 

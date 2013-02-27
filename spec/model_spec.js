@@ -33,22 +33,29 @@ describe("tetrominoes.model", function() {
         });
     });
 
+    describe("#resetBlocks", function() {
+        When(function() { subject.resetBlocks(); });
+        Then(function() { expect(subject.blocks.length).toBe(10); });
+        Then(function() { expect(subject.blocks[0].length).toBe(14); });
+        Then(function() { expect(subject.blocks[9].length).toBe(14); });
+    });
+
     describe("#block setter", function() {
         context("as occupied space", function() {
             When(function() { subject.block(3, 5, 4); });
-            Then(function() { expect(subject.blocks[3,5]).toBe(4); });
+            Then(function() { expect(subject.blocks[3][5]).toBe(4); });
         });
 
         context("as unoccupied space", function() {
             When(function() { subject.block(3, 5, null); });
-            Then(function() { expect(subject.blocks[3,5]).toBeUndefined(); });
+            Then(function() { expect(subject.blocks[3][5]).toBeUndefined(); });
         });
     });
 
     describe("#block getter", function() {
         var colorNum;
         context("when occupied", function() {
-            Given(function() { subject.blocks[2, 6] = 3; });
+            Given(function() { subject.blocks[2][6] = 3; });
             When(function() { colorNum = subject.block(2,6); });
             Then(function() { expect(colorNum).toBe(3); });
         });

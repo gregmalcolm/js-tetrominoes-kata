@@ -39,6 +39,7 @@ app.model.Placement = {
         var blocks;
         blocks = this.wellBlocks();
         if (this.outsideWell(blocks)) { return false; }
+        if (this.colidesWithBlock(blocks)) { return false; }
         return true;
     },
 
@@ -48,6 +49,14 @@ app.model.Placement = {
             if (block.x < this.model.well.left()) { return true; }
             if (block.x > this.model.well.right()) { return true; }
             if (block.y > this.model.well.bottom()) { return true; }
+        }
+        return false;
+    },
+
+    colidesWithBlock : function(blocks) {
+        for (var i = 0; i < blocks.length; ++i) {
+            var block = blocks[i];
+            if ( typeof this.model.block(block.x,block.y) !== "undefined" ) { return true; }
         }
         return false;
     },

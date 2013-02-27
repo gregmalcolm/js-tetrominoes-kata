@@ -79,6 +79,13 @@ describe("tetrominoes.model.Placement", function() {
             When(function() { valid = subject.isValid(); });
             Then(function() { expect(valid).toBeFalsy(); });
         });
+        context("another shape block is in the way", function() {
+            Given(function() { player.y = 12; });
+            Given(function() { player.landShape(); });
+            Given(function() { subject._y = 11; });
+            When(function() { valid = subject.isValid(); });
+            Then(function() { expect(valid).toBeFalsy(); });
+        });
     });
 
     describe("#commit", function() {

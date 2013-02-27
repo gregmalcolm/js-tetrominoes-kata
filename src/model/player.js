@@ -50,7 +50,7 @@ app.model.Player = {
     },
 
     randomColorNum: function() {
-        return app.util.randomInt(app.view.Player.colors.length);
+        return app.util.randomInt(app.view.Blocks.colors.length);
     },
 
     localRotationNum: function(rotationNum) {
