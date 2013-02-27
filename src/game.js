@@ -55,19 +55,19 @@ app.Game = {
         } else if (this.keys.right) {
             this.model.player.slideRight();
         } else {
-            this.model.player.resetHSlideDelay();
+            this.model.player.cancelHSlideDelay();
         };
 
         if (this.keys.down) {
             this.model.player.slideDown();
         } else {
-            this.model.player.resetVSlideDelay();
+            this.model.player.cancelVSlideDelay();
         };
 
         if (this.keys.up) {
             this.model.player.rotate();
         } else {
-            this.model.player.resetRotateDelay();
+            this.model.player.cancelRotateDelay();
         };
     },
 

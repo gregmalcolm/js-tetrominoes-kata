@@ -29,36 +29,19 @@ app.model.Player = {
 
     spawn: function(shape, rotationNum, colorNum, level) {
         this.x = (this.model.well.widthInBlocks / 2) - 1;
-        this.shape = shape || this.randomShape();
+        this.shape = shape || this._randomShape();
         this.rotationNum = (typeof rotationNum === "undefined")
-                           ? this.randomRotationNum() : rotationNum;
+                           ? this._randomRotationNum() : rotationNum;
 
         this.y = 0;
         this.y = -(this.top());
         this.colorNum = (typeof colorNum === "undefined")
-                        ? this.randomColorNum() : colorNum;
+                        ? this._randomColorNum() : colorNum;
         this.level = level ? level : 1;
     },
 
-    randomShape: function() {
-        var shapeNum = app.util.randomInt(app.model.shapes().length);
-        return app.model.shapes()[shapeNum];
-    },
-
-    randomRotationNum: function() {
-        return app.util.randomInt(this.maxRotations());
-    },
-
-    randomColorNum: function() {
-        return app.util.randomInt(app.view.Blocks.colors.length);
-    },
-
     localRotationNum: function(rotationNum) {
-        return rotationNum % this.maxRotations();
-    },
-
-    maxRotations: function() {
-        return this.shape ? this.shape.rotations.length : 1;
+        return rotationNum % this._maxRotations();
     },
 
     localBlocks: function(rotationNum) {
@@ -133,20 +116,20 @@ app.model.Player = {
     },
 
     rotate: function() {
-        this.handleRotation(function(player) {
+        this._handleRotation(function(player) {
             player.placement._rotationNum = (player.rotationNum + 1) %
-                                            player.maxRotations();
+                                            player._maxRotations();
         });
     },
 
     slideLeft: function() {
-        this.handleHSlide(function(player) {
+        this._handleHSlide(function(player) {
             player.placement._x = player.x - 1;
         });
     },
 
     slideRight: function() {
-        this.handleHSlide(function(player) {
+        this._handleHSlide(function(player) {
             player.placement._x = player.x + 1;
         });
     },
@@ -164,20 +147,6 @@ app.model.Player = {
         this.placement._y = this.y + 1;
         this.lastFallTime = this.gameTime();
         return this.placement.commitOrLand();
-    },
-
-    handleHSlide: function(action) {
-        if (!this.canHSlide()) { return false };
-        action(this);
-        this.lastHSlideTime = this.gameTime();
-        return this.placement.commit();
-    },
-
-    handleRotation: function(action) {
-        if (!this.canRotate()) { return false };
-        action(this);
-        this.lastRotateTime = this.gameTime();
-        return this.placement.commit();
     },
 
     gameTime: function() {
@@ -204,15 +173,15 @@ app.model.Player = {
         return this.elapsedTime(this.lastFallTime) > this.speed();
     },
 
-    resetHSlideDelay: function() {
+    cancelHSlideDelay: function() {
         return this.lastHSlideTime = 0;
     },
 
-    resetVSlideDelay: function() {
+    cancelVSlideDelay: function() {
         return this.lastVSlideTime = 0;
     },
 
-    resetRotateDelay: function() {
+    cancelRotateDelay: function() {
         return this.lastRotateTime = 0;
     },
 
@@ -235,4 +204,37 @@ app.model.Player = {
         this.spawn();
         return this;
     },
+
+    _randomShape: function() {
+        var shapeNum = app.util.randomInt(app.model.shapes().length);
+        return app.model.shapes()[shapeNum];
+    },
+
+    _randomRotationNum: function() {
+        return app.util.randomInt(this._maxRotations());
+    },
+
+    _randomColorNum: function() {
+        return app.util.randomInt(app.view.Blocks.colors.length);
+    },
+
+    _maxRotations: function() {
+        return this.shape ? this.shape.rotations.length : 1;
+    },
+
+    _handleHSlide: function(action) {
+        if (!this.canHSlide()) { return false };
+        action(this);
+        this.lastHSlideTime = this.gameTime();
+        return this.placement.commit();
+    },
+
+    _handleRotation: function(action) {
+        if (!this.canRotate()) { return false };
+        action(this);
+        this.lastRotateTime = this.gameTime();
+        return this.placement.commit();
+    },
+
+
 };

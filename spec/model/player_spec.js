@@ -151,7 +151,7 @@ describe("tetrominoes.model.Player", function() {
                 Then(function() { expect(subject.x).toBe(4); });
 
                 context("when we want to move sooner", function() {
-                    When(function() { subject.resetHSlideDelay(); });
+                    When(function() { subject.cancelHSlideDelay(); });
                     Then(function() { expect(subject.canHSlide()).toBeTruthy(); });
                 });
             });
@@ -196,7 +196,7 @@ describe("tetrominoes.model.Player", function() {
                 Then(function() { expect(subject.rotationNum).toBe(0); });
 
                 context("when we want to move sooner", function() {
-                    When(function() { subject.resetRotateDelay(); });
+                    When(function() { subject.cancelRotateDelay(); });
                     Then(function() { expect(subject.canRotate()).toBeTruthy(); });
                 });
             });
