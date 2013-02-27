@@ -1,6 +1,5 @@
 var app = tetrominoes;
-app.model = {};
-var model = app.model;
+app.model = app.model || {};
 
 
 app.model.Game = {

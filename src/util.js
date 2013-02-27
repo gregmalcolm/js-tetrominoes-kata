@@ -1,5 +1,4 @@
 var app = tetrominoes;
-app.util = {};
 
 app.util = {
     randomInt: function(upperLimit) {
