@@ -189,7 +189,7 @@ app.model.Player = {
     },
 
     canHSlide: function() {
-        return this.elapsedTime(this.lastHSlideTime) > 80;
+        return this.elapsedTime(this.lastHSlideTime) > 100;
     },
 
     canVSlide: function() {
