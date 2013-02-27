@@ -14,6 +14,10 @@ describe("tetrominoes.model.Player", function() {
     Given(function() { level = 2; });
     Given(function() { subject.gameTime = function() { return 10000; }; });
 
+    describe("construction", function() {
+        Then(function() { expect(subject.score).toBe(0); });
+    });
+
     describe("#spawn", function() {
         When(function() { subject.spawn(); });
         Then(function() { expect(subject.x).toBe(4); });
@@ -202,8 +206,29 @@ describe("tetrominoes.model.Player", function() {
             });
         });
 
+        describe("#resetHSlideTimer", function() {
+            When(function() { subject.resetHSlideDelay(); });
+            Then(function() { expect(subject.lastHSlideTime).toBe(10000); });
+        });
+
+        describe("#resetVSlideTimer", function() {
+            When(function() { subject.resetVSlideDelay(); });
+            Then(function() { expect(subject.lastVSlideTime).toBe(10000); });
+        });
+
+        describe("#resetFallTimer", function() {
+            When(function() { subject.resetFallDelay(); });
+            Then(function() { expect(subject.lastFallTime).toBe(10000); });
+        });
+
+        describe("#resetRotateTimer", function() {
+            When(function() { subject.resetRotateDelay(); });
+            Then(function() { expect(subject.lastRotateTime).toBe(10000); });
+        });
+
         describe("apply gravity", function() {
             context("when enough time has elapsed", function() {
+                Given(function() { subject.lastFallTime = 0; });
                 When(function() { subject.applyGravity(); });
                 Then(function() { expect(subject.y).toBe(2); });
             });

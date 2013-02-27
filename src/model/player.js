@@ -9,6 +9,7 @@ app.model.Player = {
     shape: null,
     colorNum: null,
     level: null,
+    score: 0,
 
     lastHSlideTime: 0,
     lastVSlideTime: 0,
@@ -38,6 +39,7 @@ app.model.Player = {
         this.colorNum = (typeof colorNum === "undefined")
                         ? this._randomColorNum() : colorNum;
         this.level = level ? level : 1;
+        this.resetFallDelay();
     },
 
     localRotationNum: function(rotationNum) {
@@ -137,7 +139,7 @@ app.model.Player = {
     slideDown: function() {
         if (!this.canVSlide()) { return false };
         this.placement._y = this.y + 1;
-        this.lastVSlideTime = this.gameTime();
+        this.resetVSlideDelay();
         this.lastFallTime = this.lastVSlideTime;
         return this.placement.commitOrLand();
     },
@@ -145,7 +147,7 @@ app.model.Player = {
     applyGravity: function() {
         if (!this.canFall()) { return false };
         this.placement._y = this.y + 1;
-        this.lastFallTime = this.gameTime();
+        this.resetFallDelay();
         return this.placement.commitOrLand();
     },
 
@@ -183,6 +185,22 @@ app.model.Player = {
 
     cancelRotateDelay: function() {
         return this.lastRotateTime = 0;
+    },
+
+    resetHSlideDelay: function() {
+        this.lastHSlideTime = this.gameTime();
+    },
+
+    resetVSlideDelay: function() {
+        this.lastVSlideTime = this.gameTime();
+    },
+
+    resetFallDelay: function() {
+        this.lastFallTime = this.gameTime();
+    },
+
+    resetRotateDelay: function() {
+        this.lastRotateTime = this.gameTime();
     },
 
     speed: function() {
@@ -225,13 +243,14 @@ app.model.Player = {
     _handleHSlide: function(action) {
         if (!this.canHSlide()) { return false };
         action(this);
-        this.lastHSlideTime = this.gameTime();
+        this.resetHSlideDelay();
         return this.placement.commit();
     },
 
     _handleRotation: function(action) {
         if (!this.canRotate()) { return false };
         action(this);
+        this.resetRotateDelay();
         this.lastRotateTime = this.gameTime();
         return this.placement.commit();
     },
