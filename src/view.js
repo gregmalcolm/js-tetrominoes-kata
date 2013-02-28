@@ -12,6 +12,7 @@ app.view.Game = {
 		that.well = app.view.Well.beget(that);
         that.player = app.view.Player.beget(that);
         that.blocks = app.view.Blocks.beget(that);
+        that.hud = app.view.Hud.beget(that);
 
         return that;
     },
@@ -20,6 +21,7 @@ app.view.Game = {
         this.renderBackground();
         this.blocks.render();
         this.player.render();
+        this.hud.render();
     },
 
     clear: function() {
