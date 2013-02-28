@@ -4,6 +4,7 @@ app.Game = {
     model : null,
     view : null,
     gameStateName : null,
+    gameStates : {},
 
     keyCodes : {
         left: 37, up:38, right: 39, down: 40,
@@ -22,11 +23,17 @@ app.Game = {
         var that = Object.create(this);
 
         that.model = app.model.Game.beget();
-        that.view =  app.view.Game.beget(that.model);
+        that.view = app.view.Game.beget(that.model);
+
+        that.gameStates = that._createGameStates();
 
         that.model.init(that.view);
 
         return that;
+    },
+
+    gameState : function() {
+        return this.gameStateName ? this.gameStates[this.gameStateName] : null;
     },
 
     run : function() {
@@ -138,6 +145,12 @@ app.Game = {
         };
     },
 
+    _createGameStates : function() {
+        var that = {
+            playing : app.gameState.Playing,
+        };
+        return that;
+    },
 }
 
 
