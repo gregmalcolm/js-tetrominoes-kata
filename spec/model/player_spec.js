@@ -4,6 +4,17 @@ describe("tetrominoes.model.Player", function() {
     var subject, view, gameModel;
     var shape, rotationNum, colorNum;
 
+    var countScoreForCompleteLines = function(y, stripeCol1, stripeCol2) {
+        if (typeof stripeCol2 === "undefined") {
+            stripeCol2 = stripeCol1;
+        }
+
+        for (var x = 0; x < subject.model.well.widthInBlocks; x += 2) {
+            subject.model.block(x, y, stripeCol1);
+            subject.model.block(x + 1, y, stripeCol2);
+        }
+    };
+
     Given(function() { view = { canvas: { width: 504, height: 612} }});
     Given(function() { gameModel = app.model.Game.beget(); })
     Given(function() { gameModel.init(view); });
@@ -271,7 +282,14 @@ describe("tetrominoes.model.Player", function() {
             Then(function() { expect(subject.model.block(3,11)).not.toBeDefined(); });
 
             Then(function() { expect(subject.y).toBeLessThan(5); });
+
+            //Then(function() { expect(app.game.gameStateName).toBe("countLines") });
         });
+
+        //describe("#countScoreForCompleteLines", function() {
+            //Given(function() { fillLine(12, 1, 2); });
+            //When(function() {
+        //});
 
     });
 });

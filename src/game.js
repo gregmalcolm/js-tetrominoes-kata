@@ -3,6 +3,7 @@ var app = tetrominoes;
 app.Game = {
     model : null,
     view : null,
+    gameStateName : null,
 
     keyCodes : {
         left: 37, up:38, right: 39, down: 40,
@@ -17,19 +18,25 @@ app.Game = {
         down: false
     },
 
+    beget : function() {
+        var that = Object.create(this);
+
+        that.model = app.model.Game.beget();
+        that.view =  app.view.Game.beget(that.model);
+
+        that.model.init(that.view);
+
+        return that;
+    },
+
     run : function() {
-        this.model = app.model.Game.beget();
-        this.view =  app.view.Game.beget(this.model);
-
-        this.model.init(this.view);
-
         this.view.renderBackground();
-
         this.start();
     },
 
     start: function() {
         var that = this;
+        that.gameStateName = "playing";
 
         setInterval(function() {
             return that.updateGame();
