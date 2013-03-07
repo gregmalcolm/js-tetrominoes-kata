@@ -219,8 +219,21 @@ app.model.Player = {
             this.model.block(block.x, block.y, this.colorNum);
         };
 
+        app.game.changeGameState("countLines");
         this.spawn();
         return this;
+    },
+
+    scoringForCompleteLines: function() {
+        for (var y = 0 ; y < this.model.well.heightInBlocks; ++y) {
+            var fullLine = true;
+            for (var x = 0 ; x < this.model.well.widthInBlocks; ++x) {
+                if (typeof this.model.block(x, y) === 'undefined') {
+                    fullLine = false;
+                }
+            }
+        }
+        return {lines:[12]};
     },
 
     _randomShape: function() {

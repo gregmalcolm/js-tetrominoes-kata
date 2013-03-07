@@ -9,7 +9,7 @@ app.Game = {
     beget : function() {
         var that = Object.create(this);
 
-        that.model = app.model.Game.beget();
+        that.model = app.model.Game.beget(that);
         that.view = app.view.Game.beget(that.model);
 
         that.gameStates = that._createGameStates();

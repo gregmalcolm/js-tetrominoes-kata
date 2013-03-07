@@ -4,7 +4,7 @@ describe("tetrominoes.model.Player", function() {
     var subject, view, gameModel;
     var shape, rotationNum, colorNum;
 
-    var countScoreForCompleteLines = function(y, stripeCol1, stripeCol2) {
+    var fillLine = function(y, stripeCol1, stripeCol2) {
         if (typeof stripeCol2 === "undefined") {
             stripeCol2 = stripeCol1;
         }
@@ -16,6 +16,7 @@ describe("tetrominoes.model.Player", function() {
     };
 
     Given(function() { view = { canvas: { width: 504, height: 612} }});
+    Given(function() { game = app.Game.beget()});
     Given(function() { gameModel = app.model.Game.beget(); })
     Given(function() { gameModel.init(view); });
     Given(function() { subject = app.model.Player.beget(gameModel); });
@@ -283,13 +284,16 @@ describe("tetrominoes.model.Player", function() {
 
             Then(function() { expect(subject.y).toBeLessThan(5); });
 
-            //Then(function() { expect(app.game.gameStateName).toBe("countLines") });
+            Then(function() { expect(app.game.gameStateName).toBe("countLines") });
         });
 
-        //describe("#countScoreForCompleteLines", function() {
-            //Given(function() { fillLine(12, 1, 2); });
-            //When(function() {
-        //});
+        describe("#scoringForCompleteLines", function() {
+            var scores;
+            Given(function() { fillLine(12, 1, 2); });
+            When(function() {
+                scores = subject.scoringForCompleteLines(); });
+            Then(function() { expect(scores.lines).toEqual([12]); });
+        });
 
     });
 });

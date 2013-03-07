@@ -9,6 +9,7 @@ describe("tetrominoes.Game", function() {
         Then(function() { expect(gameState["enter"]).not.toBeUndefined(); });
         Then(function() { expect(gameState["exit"]).not.toBeUndefined(); });
     });
+
     describe("#changeGameState", function() {
         var playingState, countLinesState;
         var spyOnPlayingState = function() {

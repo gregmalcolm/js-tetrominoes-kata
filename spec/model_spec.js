@@ -8,7 +8,8 @@ describe("tetrominoes.model", function() {
     });
 
     describe("Game", function() {
-        Given(function() { subject = app.model.Game.beget(); });
+        Given(function() { game = app.Game.beget(); });
+        Given(function() { subject = app.model.Game.beget(game); });
         describe(".init", function() {
 
             describe("metrics", function() {
@@ -65,5 +66,4 @@ describe("tetrominoes.model", function() {
             Then(function() { expect(colorNum).toBeUndefined(); });
         });
     });
-
 });

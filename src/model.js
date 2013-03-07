@@ -14,11 +14,19 @@ app.model.Game = {
     player : [],
     blocks : null,
 
+    beget : function(game) {
+        var that = Object.create(this);
+
+        that.game = game;
+
+        return that;
+    },
+
     init: function(view) {
         this._initMetrics(view);
         this.well = app.model.Well.beget();
         this.shapes = app.model.shapes();
-        this.resetBlocks()
+        this.resetBlocks();
         this.player = app.model.Player.beget(this);
     },
 
