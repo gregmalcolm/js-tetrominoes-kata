@@ -225,6 +225,10 @@ app.model.Player = {
     },
 
     scoringForCompleteLines: function() {
+        var scoring = {
+            lines:[],
+            colorBonus: 0
+        };
         for (var y = 0 ; y < this.model.well.heightInBlocks; ++y) {
             var fullLine = true;
             for (var x = 0 ; x < this.model.well.widthInBlocks; ++x) {
@@ -232,8 +236,14 @@ app.model.Player = {
                     fullLine = false;
                 }
             }
+            if (fullLine) {
+                scoring.lines.push(y);
+            }
         }
-        return {lines:[12]};
+        var lineBonuses = [ 0, 250, 750, 1500, 3000 ];
+        scoring.linesBonus = lineBonuses[scoring.lines.length];
+        scoring.score = scoring.linesBonus + scoring.colorBonus;
+        return scoring;
     },
 
     _randomShape: function() {

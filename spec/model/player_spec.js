@@ -4,14 +4,15 @@ describe("tetrominoes.model.Player", function() {
     var subject, view, gameModel;
     var shape, rotationNum, colorNum;
 
-    var fillLine = function(y, stripeCol1, stripeCol2) {
-        if (typeof stripeCol2 === "undefined") {
-            stripeCol2 = stripeCol1;
+    var fillLine = function(opts) {
+        if (typeof opts.stripeCol2 === "undefined") {
+            opts.stripeCol2 = opts.stripeCol1;
         }
 
+        var y = opts.y;
         for (var x = 0; x < subject.model.well.widthInBlocks; x += 2) {
-            subject.model.block(x, y, stripeCol1);
-            subject.model.block(x + 1, y, stripeCol2);
+            subject.model.block(x, y, opts.stripeCol1);
+            subject.model.block(x + 1, y, opts.stripeCol2);
         }
     };
 
@@ -288,11 +289,53 @@ describe("tetrominoes.model.Player", function() {
         });
 
         describe("#scoringForCompleteLines", function() {
-            var scores;
-            Given(function() { fillLine(12, 1, 2); });
-            When(function() {
-                scores = subject.scoringForCompleteLines(); });
-            Then(function() { expect(scores.lines).toEqual([12]); });
+            var scoring;
+            context("no lines", function() {
+                When(function() {
+                    scoring = subject.scoringForCompleteLines(); });
+                Then(function() { expect(scoring.lines).toEqual([]); });
+                Then(function() { expect(scoring.score).toEqual(0); });
+            });
+
+            context("with 1 complete line", function() {
+                Given(function() { fillLine({y:12, stripeCol1:1, stripeCol2:2}); });
+                When(function() {
+                    scoring = subject.scoringForCompleteLines(); });
+                Then(function() { expect(scoring.lines).toEqual([12]); });
+                Then(function() { expect(scoring.linesBonus).toEqual(250); });
+                Then(function() { expect(scoring.colorBonus).toEqual(0); });
+                Then(function() { expect(scoring.score).toEqual(250); });
+            });
+
+            context("with 2 complete lines", function() {
+                Given(function() { fillLine({y:8, stripeCol1:3, stripeCol2:2}); });
+                Given(function() { fillLine({y:10, stripeCol1:2, stripeCol2:3}); });
+                When(function() {
+                    scoring = subject.scoringForCompleteLines(); });
+                Then(function() { expect(scoring.lines).toEqual([8,10]); });
+                Then(function() { expect(scoring.score).toEqual(750); });
+            });
+
+            context("with 3 complete lines", function() {
+                Given(function() { fillLine({y:8, stripeCol1:3, stripeCol2:2}); });
+                Given(function() { fillLine({y:10, stripeCol1:2, stripeCol2:3}); });
+                Given(function() { fillLine({y:12, stripeCol1:1, stripeCol2:2}); });
+                When(function() {
+                    scoring = subject.scoringForCompleteLines(); });
+                Then(function() { expect(scoring.lines).toEqual([8, 10, 12]); });
+                Then(function() { expect(scoring.score).toEqual(1500); });
+            });
+
+            context("with 4 complete lines", function() {
+                Given(function() { fillLine({y:8, stripeCol1:3, stripeCol2:2}); });
+                Given(function() { fillLine({y:9, stripeCol1:3, stripeCol2:2}); });
+                Given(function() { fillLine({y:10, stripeCol1:2, stripeCol2:3}); });
+                Given(function() { fillLine({y:11, stripeCol1:1, stripeCol2:2}); });
+                When(function() {
+                    scoring = subject.scoringForCompleteLines(); });
+                Then(function() { expect(scoring.lines).toEqual([8, 9, 10, 11]); });
+                Then(function() { expect(scoring.score).toEqual(3000); });
+            });
         });
 
     });
