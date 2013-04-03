@@ -229,6 +229,15 @@ app.model.Player = {
             lines:[],
             colorBonus: 0
         };
+        this._forCompleteLines(function(lineNo) {
+            scoring.lines.push(lineNo);
+        });
+        scoring.linesBonus = this._calculateLinesBonus(scoring.lines);
+        scoring.score = scoring.linesBonus + scoring.colorBonus;
+        return scoring;
+    },
+
+    _forCompleteLines: function(onCompleteLine) {
         for (var y = 0 ; y < this.model.well.heightInBlocks; ++y) {
             var fullLine = true;
             for (var x = 0 ; x < this.model.well.widthInBlocks; ++x) {
@@ -237,13 +246,14 @@ app.model.Player = {
                 }
             }
             if (fullLine) {
-                scoring.lines.push(y);
+                onCompleteLine(y);
             }
         }
+    },
+
+    _calculateLinesBonus: function(lines) {
         var lineBonuses = [ 0, 250, 750, 1500, 3000 ];
-        scoring.linesBonus = lineBonuses[scoring.lines.length];
-        scoring.score = scoring.linesBonus + scoring.colorBonus;
-        return scoring;
+        return lineBonuses[lines.length];
     },
 
     _randomShape: function() {
