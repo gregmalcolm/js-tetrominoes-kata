@@ -297,14 +297,14 @@ describe("tetrominoes.model.Player", function() {
                 Then(function() { expect(scoring.score).toEqual(0); });
             });
 
-            context("with 1 complete line", function() {
-                Given(function() { fillLine({y:12, stripeCol1:1, stripeCol2:2}); });
+            context("with 1 complete line and color bonus", function() {
+                Given(function() { fillLine({y:12, stripeCol1:1}); });
                 When(function() {
                     scoring = subject.scoringForCompleteLines(); });
                 Then(function() { expect(scoring.lines).toEqual([12]); });
                 Then(function() { expect(scoring.linesBonus).toEqual(250); });
-                Then(function() { expect(scoring.colorBonus).toEqual(0); });
-                Then(function() { expect(scoring.score).toEqual(250); });
+                Then(function() { expect(scoring.colorBonus).toEqual(250); });
+                Then(function() { expect(scoring.score).toEqual(500); });
             });
 
             context("with 2 complete lines", function() {
@@ -326,15 +326,16 @@ describe("tetrominoes.model.Player", function() {
                 Then(function() { expect(scoring.score).toEqual(1500); });
             });
 
-            context("with 4 complete lines", function() {
-                Given(function() { fillLine({y:8, stripeCol1:3, stripeCol2:2}); });
-                Given(function() { fillLine({y:9, stripeCol1:3, stripeCol2:2}); });
-                Given(function() { fillLine({y:10, stripeCol1:2, stripeCol2:3}); });
-                Given(function() { fillLine({y:11, stripeCol1:1, stripeCol2:2}); });
+            context("with 4 complete lines and color bonus", function() {
+                Given(function() { fillLine({y:8, stripeCol1:3}); });
+                Given(function() { fillLine({y:9, stripeCol1:3}); });
+                Given(function() { fillLine({y:10, stripeCol1:2}); });
+                Given(function() { fillLine({y:11, stripeCol1:1}); });
                 When(function() {
                     scoring = subject.scoringForCompleteLines(); });
                 Then(function() { expect(scoring.lines).toEqual([8, 9, 10, 11]); });
-                Then(function() { expect(scoring.score).toEqual(3000); });
+                Then(function() { expect(scoring.colorBonus).toEqual(1000); });
+                Then(function() { expect(scoring.score).toEqual(4000); });
             });
         });
 

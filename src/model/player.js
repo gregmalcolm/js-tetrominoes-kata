@@ -229,8 +229,9 @@ app.model.Player = {
             lines:[],
             colorBonus: 0
         };
-        this._forCompleteLines(function(lineNo) {
+        this._forCompleteLines(function(lineNo, isSingleColor) {
             scoring.lines.push(lineNo);
+            if (isSingleColor) { scoring.colorBonus += 250; }
         });
         scoring.linesBonus = this._calculateLinesBonus(scoring.lines);
         scoring.score = scoring.linesBonus + scoring.colorBonus;
@@ -240,13 +241,17 @@ app.model.Player = {
     _forCompleteLines: function(onCompleteLine) {
         for (var y = 0 ; y < this.model.well.heightInBlocks; ++y) {
             var fullLine = true;
+            var isSingleColor = true;
             for (var x = 0 ; x < this.model.well.widthInBlocks; ++x) {
                 if (typeof this.model.block(x, y) === 'undefined') {
                     fullLine = false;
                 }
+                if (this.model.block(x,y) !== this.model.block(0,y)) {
+                    isSingleColor = false;
+                }
             }
             if (fullLine) {
-                onCompleteLine(y);
+                onCompleteLine(y, isSingleColor);
             }
         }
     },
