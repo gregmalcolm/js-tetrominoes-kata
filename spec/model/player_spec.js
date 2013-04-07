@@ -335,6 +335,5 @@ describe("tetrominoes.model.Player", function() {
                 Then(function() { expect(scoring.score).toEqual(4000); });
             });
         });
-
     });
 });

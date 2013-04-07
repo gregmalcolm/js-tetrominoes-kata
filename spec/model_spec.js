@@ -3,9 +3,19 @@ var app = tetrominoes;
 describe("tetrominoes.model", function() {
     var subject;
     var view;
-    Given(function() {
-        view = { canvas: { width: 504, height: 612} }
-    });
+    Given(function() { view = { canvas: { width: 504, height: 612} }});
+
+    var fillLine = function(opts) {
+        if (typeof opts.stripeCol2 === "undefined") {
+            opts.stripeCol2 = opts.stripeCol1;
+        }
+
+        var y = opts.y;
+        for (var x = 0; x < subject.well.widthInBlocks; x += 2) {
+            subject.block(x, y, opts.stripeCol1);
+            subject.block(x + 1, y, opts.stripeCol2);
+        }
+    };
 
     describe("Game", function() {
         Given(function() { game = app.Game.beget(); });
@@ -64,6 +74,27 @@ describe("tetrominoes.model", function() {
         context("when unoccupied", function() {
             When(function() { colorNum = subject.block(4,3); });
             Then(function() { expect(colorNum).toBeUndefined(); });
+        });
+    });
+
+    describe("#removeLines", function() {
+        context("remove 3 lines", function() {
+            Given(function() { fillLine({y:9, stripeCol1: 1, stripeCol2: null}); });
+            Given(function() { fillLine({y:10, stripeCol1: 2}); });
+            Given(function() { fillLine({y:11, stripeCol1: null, stripeCol2: 3}); });
+            Given(function() { fillLine({y:12, stripeCol1: 4}); });
+            Given(function() { fillLine({y:13, stripeCol1: 5}); });
+
+            When(function() { subject.removeLines([10, 12, 13]); });
+
+            Then(function() { expect(subject.block(0,13)).toBeUndefined(); });
+            Then(function() { expect(subject.block(9,13)).toBe(3); });
+
+            Then(function() { expect(subject.block(0,12)).toBe(1); });
+            Then(function() { expect(subject.block(9,12)).toBe(undefined); });
+
+            Then(function() { expect(subject.block(0,11)).toBe(undefined); });
+            Then(function() { expect(subject.block(9,11)).toBe(undefined); });
         });
     });
 });

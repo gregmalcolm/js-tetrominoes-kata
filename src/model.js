@@ -32,7 +32,7 @@ app.model.Game = {
 
     resetBlocks: function() {
         this.blocks = new Array(this.well.widthInBlocks);
-        for (var x = 0; x < this.blocks.length; x++) {
+        for (var x = 0; x < this.blocks.length; ++x) {
             this.blocks[x] = new Array(this.well.heightInBlocks);
         }
     },
@@ -44,6 +44,17 @@ app.model.Game = {
             this._setOrUnassignBlock(x, y, colorNum);
             return this;
         }
+    },
+
+    removeLines: function(lineNums) {
+        for(var i = 0; i < lineNums.length; ++i) {
+            var y = lineNums[i];
+            for (var x = 0; x < this.blocks.length; ++x) {
+                this.blocks[x].splice(y, 1);
+                this.blocks[x].unshift(undefined);
+            }
+        }
+        return this;
     },
 
     _initMetrics: function(view) {

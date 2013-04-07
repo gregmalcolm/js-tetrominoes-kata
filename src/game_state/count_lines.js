@@ -15,6 +15,10 @@ app.gameState.CountLines = {
         this.scoring = this.model.player.lastScoring;
         if (this.scoring.score === 0 ) {
             this.game.changeGameState("playing");
+        } else {
+            this.model.player.score += this.scoring.score;
+            this.model.removeLines(this.scoring.lines);
+            this.game.changeGameState("playing");
         };
     },
     exit: function() {},

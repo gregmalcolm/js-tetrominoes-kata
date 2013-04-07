@@ -34,14 +34,15 @@ app.Game = {
     },
 
     run : function() {
-        this.changeGameState("playing");
+        this.changeGameState("startNewGame");
     },
 
 
     _createGameStates : function(game) {
         var that = {
-            playing    : app.gameState.Playing.beget(game),
-            countLines : app.gameState.CountLines.beget(game),
+            startNewGame : app.gameState.StartNewGame.beget(game),
+            playing      : app.gameState.Playing.beget(game),
+            countLines   : app.gameState.CountLines.beget(game),
         };
         return that;
     },

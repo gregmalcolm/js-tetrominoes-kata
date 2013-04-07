@@ -26,15 +26,17 @@ app.gameState.Playing = {
 
     enter: function() {
         var that = this;
-        setInterval(function() {
+        that.updateLoop = setInterval(function() {
             return that.updateGame();
         }, 20);
 
         $(document).keydown( function(e) { that.onKeyDown(e); } );
         $(document).keyup( function(e) { that.onKeyUp(e); } );
+        that.model.player.spawn();
     },
 
     exit: function() {
+        clearInterval(this.updateLoop);
     },
 
     updateGame: function() {
