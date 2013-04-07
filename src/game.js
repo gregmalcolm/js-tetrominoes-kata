@@ -12,7 +12,7 @@ app.Game = {
         that.model = app.model.Game.beget(that);
         that.view = app.view.Game.beget(that.model);
 
-        that.gameStates = that._createGameStates();
+        that.gameStates = that._createGameStates(that);
 
         that.model.init(that.view);
 
@@ -38,12 +38,10 @@ app.Game = {
     },
 
 
-    _createGameStates : function() {
-        var that = this;
-        var gameState = app.gameState;
+    _createGameStates : function(game) {
         var that = {
-            playing    : gameState.Playing.beget(that),
-            countLines : gameState.CountLines.beget(that),
+            playing    : app.gameState.Playing.beget(game),
+            countLines : app.gameState.CountLines.beget(game),
         };
         return that;
     },

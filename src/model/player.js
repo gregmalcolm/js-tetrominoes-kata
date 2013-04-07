@@ -10,6 +10,7 @@ app.model.Player = {
     colorNum: null,
     level: null,
     score: 0,
+    lastScoring : null,
 
     lastHSlideTime: 0,
     lastVSlideTime: 0,
@@ -213,15 +214,23 @@ app.model.Player = {
     },
 
     landShape: function() {
+        this.placeBlocks();
+
+        this.updateScoring();
+        app.game.changeGameState("countLines");
+        return this;
+    },
+
+    placeBlocks: function() {
         var blocks = this.wellBlocks();
         for (var i = 0; i < blocks.length; i++) {
             var block = blocks[i];
             this.model.block(block.x, block.y, this.colorNum);
         };
+    },
 
-        app.game.changeGameState("countLines");
-        this.spawn();
-        return this;
+    updateScoring: function() {
+        this.lastScoring = this.scoringForCompleteLines();
     },
 
     scoringForCompleteLines: function() {
@@ -237,6 +246,7 @@ app.model.Player = {
         scoring.score = scoring.linesBonus + scoring.colorBonus;
         return scoring;
     },
+
 
     _forCompleteLines: function(onCompleteLine) {
         for (var y = 0 ; y < this.model.well.heightInBlocks; ++y) {

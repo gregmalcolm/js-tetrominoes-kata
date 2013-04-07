@@ -15,6 +15,7 @@ describe("tetrominoes.model.Placement", function() {
     Given(function() { player = app.model.Player.beget(gameModel); });
     Given(function() { player.spawn(shape, rotationNum, 3, 1); });
     Given(function() { subject = player.placement; });
+    Given(function() { app.game.changeGameState = function(){}; });
 
     context("with X placement", function() {
         Given(function() { subject._x = 7; });
@@ -133,7 +134,6 @@ describe("tetrominoes.model.Placement", function() {
                 Given(function() { subject._y = 13; });
                 When(function() { result = subject.commitOrLand(); });
                 Then(function() { expect(result).toBeFalsy(); });
-                Then(function() { expect(player.y).toBeLessThan(4); });
             });
         });
 

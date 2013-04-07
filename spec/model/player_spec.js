@@ -17,7 +17,6 @@ describe("tetrominoes.model.Player", function() {
     };
 
     Given(function() { view = { canvas: { width: 504, height: 612} }});
-    Given(function() { game = app.Game.beget()});
     Given(function() { gameModel = app.model.Game.beget(); })
     Given(function() { gameModel.init(view); });
     Given(function() { subject = app.model.Player.beget(gameModel); });
@@ -26,6 +25,7 @@ describe("tetrominoes.model.Player", function() {
     Given(function() { colorNum = 0; });
     Given(function() { level = 2; });
     Given(function() { subject.gameTime = function() { return 10000; }; });
+    Given(function() { app.game.changeGameState = function(){}; });
 
     describe("construction", function() {
         Then(function() { expect(subject.score).toBe(0); });
@@ -282,10 +282,7 @@ describe("tetrominoes.model.Player", function() {
             Then(function() { expect(subject.model.block(5,13)).toBe(3); });
 
             Then(function() { expect(subject.model.block(3,11)).not.toBeDefined(); });
-
-            Then(function() { expect(subject.y).toBeLessThan(5); });
-
-            Then(function() { expect(app.game.gameStateName).toBe("countLines") });
+            Then(function() { expect(subject.lastScoring).not.toBeNull(); });
         });
 
         describe("#scoringForCompleteLines", function() {
