@@ -43,6 +43,7 @@ app.Game = {
             startNewGame : app.gameState.StartNewGame.beget(game),
             playing      : app.gameState.Playing.beget(game),
             countLines   : app.gameState.CountLines.beget(game),
+            gameOver     : app.gameState.GameOver.beget(game),
         };
         return that;
     },

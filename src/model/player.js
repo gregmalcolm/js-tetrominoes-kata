@@ -17,6 +17,7 @@ app.model.Player = {
     lastRotateTime: 0,
     lastFallTime: 0,
     placement: null,
+    hasMoved: false,
 
     beget: function(model) {
         var that = Object.create(this);
@@ -41,6 +42,7 @@ app.model.Player = {
                         ? this._randomColorNum() : colorNum;
         this.level = level ? level : 1;
         this.resetFallDelay();
+        this.hasMoved = false;
     },
 
     localRotationNum: function(rotationNum) {
@@ -214,19 +216,16 @@ app.model.Player = {
     },
 
     landShape: function() {
-        this.placeBlocks();
+        this._placeBlocks();
 
-        this.updateScoring();
-        app.game.changeGameState("countLines");
+        if (this.hasMoved) {
+            this.updateScoring();
+            app.game.changeGameState("countLines");
+        } else {
+            app.game.changeGameState("gameOver");
+        }
+
         return this;
-    },
-
-    placeBlocks: function() {
-        var blocks = this.wellBlocks();
-        for (var i = 0; i < blocks.length; i++) {
-            var block = blocks[i];
-            this.model.block(block.x, block.y, this.colorNum);
-        };
     },
 
     updateScoring: function() {
@@ -247,6 +246,14 @@ app.model.Player = {
         return scoring;
     },
 
+
+    _placeBlocks: function() {
+        var blocks = this.wellBlocks();
+        for (var i = 0; i < blocks.length; i++) {
+            var block = blocks[i];
+            this.model.block(block.x, block.y, this.colorNum);
+        };
+    },
 
     _forCompleteLines: function(onCompleteLine) {
         for (var y = 0 ; y < this.model.well.heightInBlocks; ++y) {

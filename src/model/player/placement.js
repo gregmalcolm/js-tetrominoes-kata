@@ -67,6 +67,7 @@ app.model.Placement = {
             this.player.x = this.x();
             this.player.y = this.y();
             this.player.rotationNum = this.rotationNum();
+            this.player.hasMoved = true;
             ok = true;
         }
         this.reset();

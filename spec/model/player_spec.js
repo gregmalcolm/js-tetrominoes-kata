@@ -274,15 +274,25 @@ describe("tetrominoes.model.Player", function() {
         });
 
         describe("#landShape", function() {
-            Given(function() { subject.y = 12; });
-            When(function() { subject.landShape(); });
-            Then(function() { expect(subject.model.block(4,11)).toBe(3); });
-            Then(function() { expect(subject.model.block(4,12)).toBe(3); });
-            Then(function() { expect(subject.model.block(5,12)).toBe(3); });
-            Then(function() { expect(subject.model.block(5,13)).toBe(3); });
+            context("player has moved at least once", function() {
+                Given(function() { subject.y = 12; });
+                Given(function() { subject.hasMoved = true; });
+                When(function() { subject.landShape(); });
+                Then(function() { expect(subject.model.block(4,11)).toBe(3); });
+                Then(function() { expect(subject.model.block(4,12)).toBe(3); });
+                Then(function() { expect(subject.model.block(5,12)).toBe(3); });
+                Then(function() { expect(subject.model.block(5,13)).toBe(3); });
 
-            Then(function() { expect(subject.model.block(3,11)).not.toBeDefined(); });
-            Then(function() { expect(subject.lastScoring).not.toBeNull(); });
+                Then(function() { expect(subject.model.block(3,11)).not.toBeDefined(); });
+                Then(function() { expect(subject.lastScoring).not.toBeNull(); });
+            });
+
+            context("player has not moved yet", function() {
+                Given(function() { subject.y = 0; });
+                Given(function() { subject.hasMoved = false; });
+                When(function() { subject.landShape(); });
+                Then(function() { expect(subject.lastScoring).toBeNull(); });
+            });
         });
 
         describe("#scoringForCompleteLines", function() {
